@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cont-ads {
+    height: 100%;
+    background-color: #E5ECF9;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    // margin-top: 150px;  
+}
+
+.info {
+    background-image: url(../../../assets/imgs/auth/3e994d06-e557-4bb7-a16e-4f93275fcfb7.jfif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    padding: 150px 50px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.txt-1 {
+    color: #17202A;
+    text-transform: capitalize;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.info h2 {
+    color: #17202A;
+    text-transform: uppercase;
+    font-size: 50px;
+    margin-bottom: 25px;
+     
+}
+
+.info hr {
+    width: 55px;
+    border: 4px solid #17202A;
+    margin-left: 170px;
+    margin-bottom: 25px;
+}
+
+.txt-2 {
+    color:#17202A;
+    font-size: 18px;
+}
+
+.form {
+    padding: 150px 100px;
+    width: 40%;
+    text-align: center;
+    background-color: #fff;
+
+}
+
+.form h2 {
+    color: #4F83AB ;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.form p {
+    font-size: 16px;
+    color: #3b3a3a;
+    margin-bottom: 25px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.box {
+    outline: none;
+    border-color: #4F83AB ;
+    border-width: 0px 0px 0px 5px;
+    border-style: solid;
+    padding: 15px 35px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.inputs a {
+
+    color: #4F83AB ;
+    text-decoration: none;
+    font-size: 15px;
+    margin-bottom: 35px;
+}
+
+.submit {
+
+    background-color: #4F83AB ;
+    padding: 15px;
+    bottom: 0;
+    color: #fff;
+    font-size: 18px;
+    text-transform: uppercase;
+    border-radius: 25px;
+}
+
+@media(max-width: 990px) {
+
+    .container{
+        width: 350px;
+        height: 600px;
+        // margin-top: 100px;
+    }
+
+    .info {
+        display: none;
+    }
+
+    .form{
+        width: 100%;
+        padding: 30px;
+    }
+
+    .form h2 {
+        margin-top: 50px;
+
+    }
+}
