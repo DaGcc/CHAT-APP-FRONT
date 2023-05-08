@@ -12,6 +12,9 @@ export class ChatComponent implements OnInit {
   //develop
   constructor() {
     //feature chat
+    /*
+      codigo feature chat
+    */
    }
 
   ngOnInit(): void {
