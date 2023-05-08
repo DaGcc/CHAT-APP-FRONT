@@ -13,6 +13,9 @@ export class ChatComponent implements OnInit {
   constructor() {
     //deevelop
     
+    /*
+    codigo de develop
+    */
    }
 
   ngOnInit(): void {
