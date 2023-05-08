@@ -8,6 +8,7 @@ import * as SockJS from 'sockjs-client';
 })
 export class ChatComponent implements OnInit {
 
+  cliente : Client  = new Client();
   constructor() { }
 
   ngOnInit(): void {
