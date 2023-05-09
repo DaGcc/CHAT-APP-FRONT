@@ -11,6 +11,7 @@ export class ChatComponent implements OnInit {
   cliente : Client  = new Client();
   constructor() {
  
+    //mi devvv
    }
 
   ngOnInit(): void {
