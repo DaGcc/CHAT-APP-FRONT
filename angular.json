@@ -18,6 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
+              "sockjs-client",
               "aos"
             ],
             "outputPath": "dist/chat-app-front",
