@@ -1,6 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { RippleAnimationConfig } from '@angular/material/core';
 import { Client, IFrame } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
+import { Mensaje } from 'src/app/models/mensaje';
+import { Usuario } from 'src/app/models/usuario';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -8,17 +11,34 @@ import * as SockJS from 'sockjs-client';
 })
 export class ChatComponent implements OnInit {
 
-  //cliente STOMP
+
+  RippleAnimationConfing: RippleAnimationConfig = { enterDuration: 600, exitDuration: 500 };
+
+
+  //cliente STOMP -------------------------------------------
   cliente: Client = new Client();
   sockJS: any = new SockJS('http://localhost:8080/chat-websocket');
+  //---------------------------------------------------------
 
-  //PARA EL SCROLL
-  @ViewChild('scroll') public scrollConteiner: ElementRef | undefined; //tambien se puede usar Element
 
+  //PARA ELEMENTOS DEL DOM ----------------------------------
+  @ViewChild('scrollMe') private scrollConteiner!: ElementRef; //tambien se puede usar Element
+
+  contGroup : any
+  //---------------------------------------------------------
+
+
+  //VARIABLES------------------------------------------------
+  user: Usuario = new Usuario();
+  mensaje: Mensaje = new Mensaje();
+  mensajes: Mensaje[] = []
+  //---------------------------------------------------------
 
   scrollButton() {
     //nativeElement que representa el elemento HTML actual.
-    this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight;
+    
+      this.scrollConteiner.nativeElement.scrollTop = this.scrollConteiner.nativeElement.scrollHeight;
+    
     /*CON INTERFAZ NATIVA DE TS/JS "Element"
     this.scrollConteiner!.scrollTop = this.scrollConteiner!.scrollHeight; 
     pero es menos seguro de inyectar
@@ -41,6 +61,13 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
 
   ngOnInit(): void {
+    console.log(this.scrollConteiner)
+    this.contGroup =  document.getElementById('listChat');
+  }
+
+  ngAfterViewInit(){
+    console.log(this.scrollConteiner)
+    this.scrollButton();
   }
 
   conectar() {
@@ -58,12 +85,32 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
       return this.sockJS;
     }
 
-  
+
     //METODO/ENVENTO QUE EJECUTARA LAS SUBSCRIPCIONES CUANDO NOS CONECTEMOS
-    this.cliente.onConnect = (frame: IFrame) => { 
-      console.log('Conectado a STOMP'); 
+    this.cliente.onConnect = (frame: IFrame) => {
+      console.log('Conectado a STOMP');
     };
 
   }
+  escribiendo() { }
+  enviarMensaje() { 
+    this.scrollButton()
+  }
 
+  addchat(tipo: string) {
+
+  }
+
+  cambiarEstadoUser(est: boolean) {
+
+  }
+
+  toggleListChat() {
+
+    if (this.contGroup?.classList.contains('cont-groups-ts')) {
+      this.contGroup?.classList.remove('cont-groups-ts')
+    } else {
+      this.contGroup?.classList.add('cont-groups-ts')
+    }
+  }
 }
