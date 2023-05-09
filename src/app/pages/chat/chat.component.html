@@ -1,0 +1,328 @@
+<div class="cont-app-chat">
+
+    <div class="cont-groups" id="listChat">
+        <div class="cont-titulo">
+            <div class="cont-log">
+                <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
+                <span *ngIf="user.estado==false" style="background-color: #ab0000;"></span>
+                <span *ngIf="user.estado==true" style="background-color: #00b40f;"></span>
+            </div>
+            <p class="titulo"> Chats </p>
+
+            <span class="example-spacer"></span>
+            <button class="btn font" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(51, 0, 255,.1)'"
+                [matMenuTriggerFor]="config">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="btn" id="btn-right" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(51, 0, 255,.1)'"
+                (click)="toggleListChat()">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <mat-menu #config="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="estados">Estado</button>
+                <button mat-menu-item [matMenuTriggerFor]="addChats">Crear</button>
+            </mat-menu>
+
+            <mat-menu #estados="matMenu">
+                <button mat-menu-item (click)="cambiarEstadoUser(true)" class="btn-menu">
+                    <span>Activo</span>
+                    <span><i class="fa-solid fa-circle" style="color: #00b40f !important;"></i></span>
+                </button>
+                <button mat-menu-item (click)="cambiarEstadoUser(false)" class="btn-menu">
+                    <span>Desactivo</span>
+                    <span><i class="fa-solid fa-circle" style="color: #ab0000 !important;"></i></span>
+                </button>
+            </mat-menu>
+
+            <mat-menu #addChats="matMenu">
+                <button mat-menu-item (click)="addchat('g')" class="btn-menu">
+                    <span>Chat grupal</span>
+                    <span><i class="fa-solid fa-user-group"></i></span>
+                </button>
+                <button mat-menu-item (click)="addchat('p')" class="btn-menu">
+                    <span>Agregar amigo</span>
+                    <span><i class="fa-solid fa-user-plus"></i></span>
+                </button>
+            </mat-menu>
+
+        </div>
+        <div class="groups">
+            <ul>
+                <!-- <li *ngFor="let chat of chats">
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs-chat/sad.png"
+                                alt=""></div>
+                        <div class="util">
+                            <span>{{chat.nombreChatPrincipal}}</span>
+                            <span class="subtitulo">  </span>
+                        </div>
+
+                    </a>
+
+                </li> -->
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo">  </span>
+                        </div>
+
+                    </a>
+
+                </li>
+
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo">  </span>
+                        </div>
+
+                    </a>
+
+                </li>
+
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+             
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+                <li >
+                    <a >
+
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                                alt=""></div>
+                        <div class="util">
+                            <span>grupo websockets</span>
+                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        </div>
+
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="cont-chat">
+
+        <div class="cont-titulo">
+            <button class="btn" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(51, 0, 255,.1)'"
+                (click)="toggleListChat()">
+                <i class="fa-solid fa-list"></i>
+            </button>
+
+            <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
+            <p class="titulo"> Los suaves del free
+                <span class="subtitulo"> sub </span>
+            </p>
+
+            <span class="example-spacer"></span>
+            <mat-icon>more_vert</mat-icon>
+        </div>
+        <div class="groups" id="divChat" #scrollMe>
+            <ul>
+                <!-- mensajes de otros -->
+                <li>
+                    <div>
+                        <div>
+                            <p>~daniel</p>
+                            <div>
+                                <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis, corporis
+                                    molestiae. Impedit doloribus odit sapiente, quam perferendis dolorum tenetur
+                                    eaque.</span>
+                                <p>
+                                    <span>10:37 p.m.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </li>
+                <li>
+                    <div>
+                        <div>
+                            <p>~daniel</p>
+                            <div>
+                                <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit,
+                                    veritatis.</span>
+                                <p>
+                                    <span>10:39 p.m.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- tus mensajes (con la directiva *ngIf se controla esto) -->
+                <li class="tu_li">
+                    <div>
+                        <div>
+                            <p>tu</p>
+                            <div>
+                                <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis, corporis
+                                    molestiae.</span>
+                                <p>
+                                    <span>10:40 p.m.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="tu_li">
+                    <div>
+                        <div>
+                            <p>tu</p>
+                            <div>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident,
+                                    pariatur.</span>
+                                <p>
+                                    <span>10:41 p.m.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li *ngFor="let mensaje of mensajes">
+                    <div>
+                        <div>
+                            <p [ngStyle]="{'color':mensaje.usuario.color}">~daniel</p>
+                            <div>
+                                <span>{{mensaje.texto}}</span>
+                                <p>
+                                    <span>{{mensaje.fecha | date :'h:mm a'}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="acctions">
+
+            <div class="cont-input-esp ">
+                <label for="fleAdjuntar" class="btn font"><i class="fa-solid fa-paperclip"></i></label>
+                <input type="file" id="fleAdjuntar" style="display: none;">
+            </div>
+
+            <div class="cont-input">
+                <!-- 
+                <mat-form-field class="form-field" appearance="legacy">
+                    <mat-label>Escribe un mensaje...</mat-label>
+                    <input matInput [(ngModel)]="mensaje.texto">
+                </mat-form-field> -->
+                <!-- <mat-form-field class="form-field" appearance="legacy">
+                    <mat-label>Escribe un mensaje...</mat-label>
+                    <textarea matInput [(ngModel)]="mensaje.texto" ></textarea>
+                </mat-form-field> -->
+                <div class="form-field">
+                    <textarea placeholder="Escribe un mensaje..." (ngModelChange)="escribiendo()"
+                        [(ngModel)]="mensaje.texto"></textarea>
+                </div>
+
+            </div>
+            <div class="cont-btn">
+
+                <button class="btn font" matRipple [matRippleAnimation]="RippleAnimationConfing"
+                    [matRippleCentered]="false" [matRippleDisabled]="false" [matRippleUnbounded]="false"
+                    [matRippleColor]="'rgba(68, 0, 255,.1)'" (click)="enviarMensaje()">
+                    <i class="fa-solid fa-paper-plane"></i></button>
+
+                <button class="btn font" matRipple [matRippleAnimation]="RippleAnimationConfing"
+                    [matRippleCentered]="false" [matRippleDisabled]="false" [matRippleUnbounded]="false"
+                    [matRippleColor]="'rgba(0, 0, 0, 0.1)'">
+                    <i class="fa-solid fa-microphone"></i></button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
