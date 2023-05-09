@@ -1,0 +1,44 @@
+<mat-drawer-container class="example-container" [hasBackdrop]="getScreenWidth<=pixelResponsive">
+    <!-- barra lateral -->
+    <mat-drawer drawer [mode]="getScreenWidth<=pixelResponsive?'over':'side'" [opened]="getScreenWidth<=pixelResponsive?false:true" >
+
+      <ul>
+
+        <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(137, 137, 137,.1)'" 
+          (click)="getScreenWidth<=pixelResponsive?drawer.toggle(): ''" >
+          <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
+            <i class="fa-solid fa-house-chimney-window"></i> <span class="title">Home</span>
+          </a>
+        </li>
+
+        <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(137, 137, 137,.1)'"
+          (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
+          <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
+            <i class="fa-solid fa-message"></i> <span class="title">Chat</span>
+          </a>
+        </li>
+        
+      </ul>
+
+      <!-- <button class="btn font" 
+        matRipple
+        [matRippleAnimation]="RippleAnimationConfing"
+        [matRippleCentered]="false"
+        [matRippleDisabled]="false"
+        [matRippleUnbounded]="false"
+        [matRippleColor]="'rgba(68, 0, 255,.2)'"
+        routerLink="chat" routerLinkActive="btn-active" [routerLinkActiveOptions]="{exact: true}">
+        <div>
+          <i class="fa-solid fa-message"></i>
+        </div>
+        <p class="btn-title">Chat</p>
+        </button> -->
+    </mat-drawer>
+
+    <!-- contenido -->
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>

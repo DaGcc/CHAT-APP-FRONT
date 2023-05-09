@@ -1,0 +1,15 @@
+.conteiner-app{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/*juega con el tamaño del header y sidebard*/
+.cont-app-header{
+    height: 8vh;
+    position:sticky;
+    top: 0;
+}
+.cont-app-sidebar{
+    height: 92vh;
+}

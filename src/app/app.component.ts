@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import * as  AOS  from 'aos';
 @Component({
   selector: 'app-root',
@@ -6,8 +6,9 @@ import * as  AOS  from 'aos';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+
+
   ngOnInit(): void {
     AOS.init();
   } 
-  title = 'chat-app-front';
 }
