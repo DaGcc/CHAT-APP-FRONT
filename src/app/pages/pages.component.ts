@@ -1,4 +1,6 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-pages',
@@ -9,6 +11,9 @@ export class PagesComponent implements OnInit {
 
   public screenWidth: any;
   public screenHeight: any;
+
+  public estadoSide: boolean = true
+ 
   constructor() { }
 
 
@@ -17,7 +22,12 @@ export class PagesComponent implements OnInit {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
   } 
-  
+
+
+  salvar(e : boolean){
+    this.estadoSide = e
+    console.log(e)
+  }
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {

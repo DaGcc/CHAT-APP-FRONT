@@ -5,7 +5,7 @@
       <ul>
 
         <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
-          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(137, 137, 137,.1)'" 
+          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple" 
           (click)="getScreenWidth<=pixelResponsive?drawer.toggle(): ''" >
           <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
             <i class="fa-solid fa-house-chimney-window"></i> <span class="title">Home</span>
@@ -13,7 +13,7 @@
         </li>
 
         <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
-          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(137, 137, 137,.1)'"
+          [matRippleDisabled]="false" [matRippleUnbounded]="false"  [matRippleColor]="colorRiple" 
           (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
           <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
             <i class="fa-solid fa-message"></i> <span class="title">Chat</span>
