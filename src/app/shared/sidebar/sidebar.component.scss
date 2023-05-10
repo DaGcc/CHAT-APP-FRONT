@@ -4,13 +4,17 @@
 }
 *{
     outline: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 
 mat-drawer{
     width: 200px;
     background-color: #661eed;
-
+    border-left: 4px solid transparent;//cambiarlo por un margin para cada li (recomendado)
+    border-right: none;
 }
 
 mat-drawer-content {
@@ -37,34 +41,62 @@ li{
     border: 0px solid rgba(0, 0, 0, 0.368);
     margin-bottom: 5px;
     list-style: none;
-
+    position: relative;
 }
 
+
 a{
+    background-color: transparent;
     color: #fff;
     padding: 15px 35px 15px 18px;
     display: block;
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
-
-    transition: all .5s ease-out;
-    &:hover{
-        color: rgb(102, 30, 237);
-        background-color: rgb(255, 255, 255);
+    border-radius: 20px 0  0 20px;
+    transition: all .4s ease-out;
+    // &:hover{
+    //     color: rgb(102, 30, 237);
+    //     border-radius: 0 20px 20px 0;
+    //     background-color: rgb(255, 255, 255);
         
-    }
+    // }
 }
 
 span{
     margin-left: 5px;
-    
 }
-
+.off{
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 0;
+    display: block;
+    width: 3%;
+    /* border-radius: 0 40px 40px 0px; */
+    border-radius: 5px 0 0 5px;
+    height:100%;
+    background-color: #8d54f6;
+    transition: all 650ms ease-in;
+}
+.on{
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 0;
+    display: block;
+    /* border-radius: 0 40px 40px 0px; */
+    height: 100%;
+    width: 100%;
+    border-radius: 20px 0 0 20px;
+    background-color: #fff;
+    transition: all 650ms ease-out;
+  }
 .active{
    color: rgb(102, 30, 237);
-   background-color: rgb(255, 255, 255);
-   transition: all .5s ease-in;
+//    border-radius: 30px 0  0 30px;
+   transition: all .4s ease-in;
+   
 }
 
 
