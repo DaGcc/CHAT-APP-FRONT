@@ -2,11 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: content-box;
+    color: #8d54f6;
 }
 
 
 .tool {
-    background-color: var(--color-gris-oscuro);
+    // background-color: var(--color-gris-oscuro);
+    background-color: #000000;
     /* background-color: #262626; */
     height: 100%;
     /* color: rgb(68, 0, 255); */
@@ -22,4 +24,33 @@
     font-size: small;
     font-weight: 700;
 
+}
+
+span{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    // width: 50%;
+}
+
+span  img {
+    // width: 10%;
+    height: 75%;
+}
+
+@media screen  and (max-width:850px){
+    
+    span  img {
+        // width: 10%;
+        height: 65%;
+    }
+}
+
+@media screen  and (max-width:550px){
+    
+    span  img {
+        // width: 10%;
+        height: 55%;
+    }
 }

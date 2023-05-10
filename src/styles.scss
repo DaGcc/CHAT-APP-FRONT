@@ -2,10 +2,13 @@
 
 :root{
     --color-warn-mat:#f44336;
-    --color-text-opaco:#7c8793;
+    // --color-text-opaco:#7c8793;
+    --color-text-opaco:#a5b3c2;
     --color-mor-az-f0:#5800ff;
+    --color-mor-az-f1:#220062;
     --color-gris-semiclaro: #242a33;
-    --color-gris-oscuro: #191d23;
+    --color-gris-oscuro: rgb(25, 29, 35);
+    
 }
 html, body { height: 100%; }
 body { margin: 0; font-family:'Ubuntu', Roboto, "Helvetica Neue", sans-serif; }

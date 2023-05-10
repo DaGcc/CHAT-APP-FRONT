@@ -6,9 +6,10 @@
       [matRippleDisabled]="false"
       [matRippleUnbounded]="false"
       [matRippleColor]="'rgba(68, 0, 255,.5)'" (click)="toogle()">
-      <mat-icon>menu</mat-icon>
+      <mat-icon *ngIf="estadoSide" data-aos="zoom-out" data-aos-duration="1000">close</mat-icon>
+      <mat-icon *ngIf="estadoSide==false" data-aos="zoom-in" data-aos-duration="1000">menu</mat-icon>
     </button>
-    <span>My App</span>
+    <span data-aos="fade-right" ><img src="../../../assets/imgs/shared/LogoBasicoPE.png" alt=""></span>
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>favorite</mat-icon>

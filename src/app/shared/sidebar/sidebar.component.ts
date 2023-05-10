@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { RippleAnimationConfig } from '@angular/material/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
@@ -19,10 +19,14 @@ export class SidebarComponent implements OnInit {
   @Input()
   public getScreenHeight: any;
 
+
+  @Output()
+  public estadoSide : EventEmitter<boolean> = new EventEmitter<boolean>();
   
   @ViewChild(MatDrawer) drawer!: MatDrawer;
 
   RippleAnimationConfing: RippleAnimationConfig = { enterDuration: 600, exitDuration: 500 };
+  colorRiple: string = 'rgba(137, 137, 137,.1)'
 
   constructor(private utilService: UtilService, private router: Router) { }
 
@@ -30,6 +34,7 @@ export class SidebarComponent implements OnInit {
     this.utilService.sideBarCambio.subscribe(() => {
       console.log('click')
       this.drawer.toggle();
+      this.estadoSide.emit(this.drawer.opened)
     })
   }
 
@@ -37,5 +42,6 @@ export class SidebarComponent implements OnInit {
     console.log(e);
     this.router.navigate([e.link]);
   }
+
 
 }
