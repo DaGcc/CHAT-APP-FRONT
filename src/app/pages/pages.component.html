@@ -1,9 +1,9 @@
 <div class="conteiner-app">
     <div class="cont-app-header">
-        <app-header></app-header>
+        <app-header [estadoSide]="estadoSide"></app-header>
     </div>
     <div class="cont-app-sidebar">
-        <app-sidebar [getScreenWidth]="screenWidth" [getScreenHeight]="screenHeight" ></app-sidebar>
+        <app-sidebar #side [getScreenWidth]="screenWidth" [getScreenHeight]="screenHeight" (estadoSide)="salvar($event)"></app-sidebar>
     </div>
 </div>
 

@@ -9,7 +9,8 @@
 
 mat-drawer{
     width: 200px;
-    background-color: var(--color-gris-semiclaro);
+    background-color: #661eed;
+
 }
 
 mat-drawer-content {
@@ -36,26 +37,36 @@ li{
     border: 0px solid rgba(0, 0, 0, 0.368);
     margin-bottom: 5px;
     list-style: none;
+
 }
 
 a{
-    color: #818a99;
+    color: #fff;
     padding: 15px 35px 15px 18px;
     display: block;
     font-size: 14px;
-    font-weight: 100;
+    font-weight: 700;
     text-decoration: none;
+
+    transition: all .5s ease-out;
+    &:hover{
+        color: rgb(102, 30, 237);
+        background-color: rgb(255, 255, 255);
+        
+    }
 }
 
 span{
     margin-left: 5px;
+    
 }
 
 .active{
-   color: #fff;
-   background-color: rgba(0, 0, 0, 0.783);
-   transition: all 1s;
+   color: rgb(102, 30, 237);
+   background-color: rgb(255, 255, 255);
+   transition: all .5s ease-in;
 }
+
 
 .title{
     margin-left: 12px;
