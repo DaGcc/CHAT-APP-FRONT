@@ -10,7 +10,7 @@ import { MaterialModule } from './material/material.module';
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
-import { NgParticlesModule } from "ng-particles";
+
 /************************COMPONENTES*************************/
 
 
@@ -25,9 +25,8 @@ import { NgParticlesModule } from "ng-particles";
     BrowserAnimationsModule,
     MaterialModule,
     SharedModule,
-    AuthModule,
-    NgParticlesModule
-  ], 
+    AuthModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
