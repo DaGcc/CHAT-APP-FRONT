@@ -4,9 +4,9 @@ import { PagesComponent } from './pages.component';
 import { ChatComponent } from './chat/chat.component';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -20,9 +20,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     MaterialModule,
     RouterModule,
-    SharedModule,
-    ReactiveFormsModule,
-    FormsModule
+    ReactiveFormsModule, 
+    FormsModule,
+    SharedModule
   ]
 })
 export class PagesModule { }

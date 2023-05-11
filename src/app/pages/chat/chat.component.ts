@@ -61,12 +61,10 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
 
   ngOnInit(): void {
-    console.log(this.scrollConteiner)
     this.contGroup =  document.getElementById('listChat');
   }
 
   ngAfterViewInit(){
-    console.log(this.scrollConteiner)
     this.scrollButton();
   }
 
@@ -81,7 +79,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
   logica() {
 
     //RETORNA EL SOCKJS PARA NO USAR EL WEBSOCKET NATIVO DEL HTML
-    this.cliente.webSocketFactory = () => {//SE EJECUTARA LUEGO DE ACTIVAR ENTRAR EN CONTACATO CON EL SERVIDOR
+    this.cliente.webSocketFactory = () => {//SE EJECUTARA LUEGO DE ACTIVAR o ENTRAR EN CONTACATO CON EL SERVIDOR
       return this.sockJS;
     }
 

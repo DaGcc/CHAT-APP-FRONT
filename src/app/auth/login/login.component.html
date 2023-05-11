@@ -11,24 +11,25 @@
                 natus temporibus autem?
             </p>
         </div>
-    <form class="form"> 
-        <h2>Login</h2>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis corrupti sed sapiente libero molestiae
-            accusantium assumenda repellendus sint minima nemo voluptatibus, dolore adipisci nobis architecto
-            blanditiis! Quo quisquam ducimus temporibus?
-        </p>
-        <div class="inputs">
+        <div class="form" >
+            <h2>Login</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis corrupti sed sapiente libero
+                molestiae
+                accusantium assumenda repellendus sint minima nemo voluptatibus, dolore adipisci nobis architecto
+                blanditiis! Quo quisquam ducimus temporibus?
+            </p>
+            <div class="inputs">
 
-            <input type="email" class="box" placeholder="Ingresa tu correo">
-            <input type="password" class="box" placeholder="Ingresa tu contraseña">
-        
-            <a href="·">Olvidaste tu contraseña?</a>
+                <input type="email" class="box" placeholder="Ingresa tu correo" [(ngModel)]="emailInput">
+                <input type="password" class="box" placeholder="Ingresa tu contraseña" [(ngModel)]="passInput">
 
-            <input type="submit"value="Login" class="submit">
+                <a href="·">Olvidaste tu contraseña?</a>
+
+
+            </div>
+            <!-- <input type="submit" value="Login" class="submit"> -->
+            <button type="button" (click)="login()" class="submit">LOGIN</button>
         </div>
-    </form>
     </div>
-</div>adadadadada
-
-daniel 
+</div>

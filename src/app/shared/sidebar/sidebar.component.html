@@ -1,28 +1,54 @@
 <mat-drawer-container class="example-container" [hasBackdrop]="getScreenWidth<=pixelResponsive">
     <!-- barra lateral -->
-    <mat-drawer drawer [mode]="getScreenWidth<=pixelResponsive?'over':'side'" [opened]="getScreenWidth<=pixelResponsive?false:true" >
+    <mat-drawer  drawer [mode]="getScreenWidth<=pixelResponsive?'over':'side'" [opened]="getScreenWidth<=pixelResponsive?false:true" >
+      <div class="mat-drawer-inner-container"><!--efecto scroll (ESPECIAL) lo desactiavamos -->
+        <section class="sideBar-cont">
+          <div class="sideBar">
+            <div class="perfil-side">
+              <div class="perfil">
 
-      <ul>
+                <div class="perfil-img">
+                  <div class="cont-img">
+                    <img src="../../../assets/imgs/page/sad.png" alt="">
+                  </div>
+                </div>
 
-        <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
-          [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple" 
-          (click)="getScreenWidth<=pixelResponsive?drawer.toggle(): ''" >
-          <span routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
-          <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font" >
-            <i class="fa-solid fa-house-chimney-window"></i> <span class="title">Home</span>
-          </a>
-        </li>
+                <div class="perfil-datos">
+                  <span>DANIEL GUTIERREZ</span>
+                  <span>gutierrezcallazacadaniel@gmail.com</span>
+                </div>
+                
+              </div>
+            </div>
+            <!-- <span class="divider"></span> -->
+            <ul>
+      
+              <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple" 
+                (click)="getScreenWidth<=pixelResponsive?drawer.toggle(): ''" >
+                <span routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
+                <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font" >
+                  <i class="fa-solid fa-house-chimney-window"></i> <span class="title">Home</span>
+                </a>
+              </li>
+      
+              <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false"  [matRippleColor]="colorRiple" 
+                (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
+                <span routerLink="chat" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
+                <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
+                  <i class="fa-solid fa-message"></i> <span class="title">Chat</span>
+                </a>
+              </li>
+         
 
-        <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
-          [matRippleDisabled]="false" [matRippleUnbounded]="false"  [matRippleColor]="colorRiple" 
-          (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
-          <span routerLink="chat" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
-          <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
-            <i class="fa-solid fa-message"></i> <span class="title">Chat</span>
-          </a>
-        </li>
-        
-      </ul>
+            </ul>
+          </div>
+
+        </section>
+
+      </div>
+
 
       <!-- <button class="btn font" 
         matRipple
