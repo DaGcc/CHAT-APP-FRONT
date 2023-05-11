@@ -11,13 +11,14 @@ import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 
+
 /************************COMPONENTES*************************/
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

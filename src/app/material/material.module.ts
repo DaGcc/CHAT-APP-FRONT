@@ -48,6 +48,7 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 //ctrl + shift + -> para seleccionar palabra 
@@ -101,7 +102,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
-    OverlayModule
+    OverlayModule,
+    ReactiveFormsModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -149,7 +151,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
-    OverlayModule
+    OverlayModule,
+    ReactiveFormsModule
   ]
 })
 export class MaterialModule { 

@@ -1,9 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
+
 
 .body{
     background-color: #E5ECF9;
@@ -22,21 +17,20 @@
 }
 
 .info {
-    background-image: url(../../../assets/imgs/auth/3e994d06-e557-4bb7-a16e-4f93275fcfb7.jfif);
-    background-position: center center;
+    background-image: url(../../../assets/imgs/auth/chatLogin.svg);
+    background-position: center 160px;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 90%;
     text-align: center;
-    padding: 150px 50px;
-    width: 50%;
+    padding: 50px 50px;
+    width: 45%;
     
 }
 
 .info h2 {
-    color: #c0dcfc;
+    color: #4F83AB;
     text-transform: uppercase;
-    font-size: 50px;
-    margin-bottom: 25px;
+    font-size: 3em;
      
 }
 
@@ -110,12 +104,45 @@
     border-radius: 25px;
 }
 
-@media(max-width: 990px) {
+::-ms-reveal {
+    display: none;
+}
+
+@media(max-width: 966px) {
+    .info{
+        width: 35%;
+    }
 
     .container{
-        width: 350px;
-        height: 600px;
-        margin-top: 10px;
+        width: 85%;
+    }
+
+    .info{
+        background-position: center center;
+    }
+
+    .info h2{
+        margin-top: 5vh;
+    }
+
+    .form{
+        width: 55%;
+    }
+
+    .form h2{
+        margin-bottom: 60px;
+        font-size: 3em;
+    }
+
+    .form p{
+        margin-bottom: 60px;
+    }
+}
+
+@media(max-width: 720px) {
+
+    .container{
+        width: 80%;
     }
 
     .info {
@@ -124,11 +151,9 @@
 
     .form{
         width: 100%;
-        padding: 30px;
     }
 
-    .form h2 {
-        margin-top: 50px;
-
+    .form p{
+        margin-bottom: 25px;
     }
 }
