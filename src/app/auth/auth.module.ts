@@ -4,11 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { AuthRecordComponent } from './auth-record/auth-record.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaterialModule } from '../material/material.module';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    AuthRecordComponent
+    AuthRecordComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,

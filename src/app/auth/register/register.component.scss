@@ -1,0 +1,121 @@
+ body {
+     height: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     background-color: #E5ECF9;
+ }
+
+ .contenido {
+     display: flex;
+     height: 90%;
+     width: 70%;
+     margin-top: 100px;
+     margin: auto;
+     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+ }
+
+ .info {
+     background-image: url(../../../assets/imgs/auth/color-2174049.png);
+     width: 55%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-evenly;
+     align-items: center;
+ }
+
+ .info h2{
+    color: #4F83AB;
+    text-transform: uppercase;
+    font-size: 3em;
+    margin-top: 80px;
+ }
+
+ .info hr {
+    width: 50%;
+    border: 3px solid #17202A;
+    margin-bottom: 10vh;
+}
+
+ .imagen {
+     background-image: url(../../../assets/imgs/auth/chatRegister.svg);
+     height: 70%;
+     width: 60%;
+     background-repeat: no-repeat;
+     background-size: 90%;
+ }
+
+ .form {
+     background-color: white;
+     width: 45%;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .form h2{
+    color: #4F83AB;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 40px;
+ }
+
+ .inputs{
+    margin-left: 5vw;
+    margin-bottom: 30px;
+ }
+
+mat-form-field{
+    width: 80%;
+    margin: auto;
+}
+
+.irLogin{
+    margin-top: 3.5vh;
+    width: 90%;
+}
+.irLogin{
+    text-align: end;
+}
+
+.form span{
+    color: mediumorchid;
+    font-weight: bold;
+}
+
+.form span:hover{
+    cursor: pointer;
+}
+
+@media(max-width: 966px) {
+    .contenido{
+        width: 85%;
+    }
+
+    .info h2{
+        margin-top: 20vh;
+    }
+
+    .form h2{
+        margin-top: 5vh;
+    }
+
+    .imagen {
+        margin-top: 5vh;
+    }
+}
+
+@media(max-width: 660px) {
+    .info{
+        display: none;
+    }
+
+    .form{
+        width: 100%;
+    }
+
+    .inputs{
+        margin-left: 15vw;
+    }
+}
