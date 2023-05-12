@@ -5,6 +5,7 @@ import { AuthRecordComponent } from './auth-record/auth-record.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaterialModule } from '../material/material.module';
 import { RegisterComponent } from './register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RegisterComponent } from './register/register.component';
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }

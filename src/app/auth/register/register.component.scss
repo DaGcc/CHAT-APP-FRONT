@@ -28,7 +28,7 @@
     color: #4F83AB;
     text-transform: uppercase;
     font-size: 3em;
-    margin-top: 80px;
+    margin-top: 20vh;
  }
 
  .info hr {
@@ -76,7 +76,7 @@ mat-form-field{
     width: 90%;
 }
 .irLogin{
-    text-align: end;
+    text-align: center;
 }
 
 .form span{
@@ -91,6 +91,14 @@ mat-form-field{
 @media(max-width: 966px) {
     .contenido{
         width: 85%;
+    }
+
+    .info{
+        width: 50%;
+    }
+
+    .form{
+        width: 50%;
     }
 
     .info h2{
@@ -116,6 +124,14 @@ mat-form-field{
     }
 
     .inputs{
-        margin-left: 15vw;
+        text-align: center;
+        margin-left: 0;
+        width: 60%;
+    }
+}
+
+@media(max-width: 480px){
+    .inputs{
+        width: 80%;
     }
 }

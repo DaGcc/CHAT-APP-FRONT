@@ -6,7 +6,7 @@
             <div class="imagen">
             </div>
         </div>
-        <div [formGroup]="formUser" class="form">
+        <form [formGroup]="formUser" (ngSubmit)="operar()" class="form">
             <h2>Rellene el Formulario</h2>
             <div class="inputs">
                 <mat-form-field appearance="fill">
@@ -22,7 +22,7 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
@@ -30,18 +30,18 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Confirm Password</mat-label>
                     <input matInput formControlName="confirmPassword" [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
             </div>
 
-            <button mat-raised-button (click)="operar()" color="primary">Registrarse</button>
+            <button mat-raised-button type="submit" color="primary">Registrarse</button>
 
             <div class="irLogin">
                 <h3>¿Tienes una cuenta?, <span>Inicia Sesión!</span></h3>
             </div>
-        </div>
+        </form>
         
     </div>
 </body>

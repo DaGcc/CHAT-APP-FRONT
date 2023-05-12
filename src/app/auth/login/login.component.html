@@ -18,7 +18,7 @@
                 Inicia sesión para compartir ideas interesantes y productivas con tus amigos.
             </p>
 
-            <div [formGroup] = "formUser" class="inputs">
+            <form [formGroup] = "formUser" (ngSubmit)="operar()" class="inputs">
 
                 <mat-form-field appearance="fill">
                     <mat-label>Email</mat-label>
@@ -28,15 +28,15 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                 </mat-form-field>
 
                 <a>Olvidaste tu contraseña?</a>
 
-                <button mat-raised-button color="primary">Loguearse</button>
-            </div>
+                <button mat-raised-button type="submit" color="primary">Loguearse</button>
+            </form>
 
         </div>
     </div>
