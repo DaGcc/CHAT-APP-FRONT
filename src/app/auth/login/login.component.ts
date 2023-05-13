@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   listaUsuarioPermitidos: Usuario[] = [
     {
       idUsuario: 1,
+      nombre: 'one',
       estado: true,
       email: "userOne@gmail.com",
       password: "123",
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     },
     {
       idUsuario: 2,
+      nombre: 'two',
       estado: true,
       email: "userTwo@gmail.com",
       password: "123",
@@ -34,6 +36,7 @@ export class LoginComponent implements OnInit {
     },
     {
       idUsuario: 3,
+      nombre: 'three',
       estado: true,
       email: "userThree@gmail.com",
       password: "123",
