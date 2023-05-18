@@ -1,7 +1,7 @@
 <div class="cont-app-chat">
 
     <div class="cont-groups" id="listChat">
-        <div class="cont-titulo">
+        <div class="cont-titulo bar-top">
             <div class="cont-log">
                 <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
                         alt=""></div>
@@ -11,6 +11,7 @@
             <p class="titulo"> Chats </p>
 
             <span class="example-spacer"></span>
+
             <button class="btn font" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
                 [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(51, 0, 255,.1)'"
                 [matMenuTriggerFor]="config">
@@ -21,13 +22,13 @@
                 [matRippleColor]="'rgba(51, 0, 255,.1)'" (click)="toggleListChat()">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
-            <mat-menu #config="matMenu">
-                <button mat-menu-item [matMenuTriggerFor]="estados">Estado</button>
-                <button mat-menu-item [matMenuTriggerFor]="addChats">Crear</button>
+            <mat-menu #config="matMenu" >
+                <button mat-menu-item [matMenuTriggerFor]="estados" style="font-family: 'Ubuntu',sans-serif !important">Estado</button>
+                <button mat-menu-item [matMenuTriggerFor]="addChats" style="font-family: 'Ubuntu',sans-serif !important">Crear</button>
             </mat-menu>
 
-            <mat-menu #estados="matMenu">
-                <button mat-menu-item (click)="cambiarEstadoUser(true)" class="btn-menu">
+            <mat-menu #estados="matMenu" >
+                <button mat-menu-item (click)="cambiarEstadoUser(true)" class="btn-menu"  >
                     <span>Activo</span>
                     <span><i class="fa-solid fa-circle" style="color: #00b40f !important;"></i></span>
                 </button>
@@ -38,13 +39,17 @@
             </mat-menu>
 
             <mat-menu #addChats="matMenu">
-                <button mat-menu-item (click)="addchat('g')" class="btn-menu">
+                <button mat-menu-item (click)="addchat(3)" class="btn-menu">
                     <span>Chat grupal</span>
                     <span><i class="fa-solid fa-user-group"></i></span>
                 </button>
-                <button mat-menu-item (click)="addchat('p')" class="btn-menu">
+                <button mat-menu-item (click)="addchat(2)" class="btn-menu">
                     <span>Agregar amigo</span>
                     <span><i class="fa-solid fa-user-plus"></i></span>
+                </button>
+                <button mat-menu-item (click)="addchat(1)" class="btn-menu" *ngIf="!chatPrivado">
+                    <span>Chat privado</span>
+                    <span><i class="fa-solid fa-lock"></i></span>
                 </button>
             </mat-menu>
 
@@ -64,133 +69,54 @@
                     </a>
 
                 </li> -->
-                <li data-aos="fade-right">
-                    <a>
+                <li data-aos="fade-right" *ngFor="let cuesp of listaChatUsuarioEspDTO; let i = index" class="z"
+                matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple">
 
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
+                    <!--chat personal-->
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===1" (click)="cargarChat(cuesp.chat.idChat)">
+                        <div class="cont-img"><img class="header-image" 
+                            [src]="user.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'" alt=""> alt="">
+                        </div>
+                        <div class="util" >
+                            
+                            <span>{{user.username}}</span>
                             <span class="subtitulo"> </span>
                         </div>
-
                     </a>
 
-                </li>
-
-                <li data-aos="fade-left">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
+                    <!--chat de dos-->
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===2" (click)="cargarChat(cuesp.chat.idChat)">
+                        <div class="cont-img"><img class="header-image" 
+                            [src]="cuesp.listaUsuario[0]!.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'" alt="">
+                        </div>
+                        <div class="util" >
+                            
+                            <span>{{cuesp.listaUsuario[0]!.username}}</span>
                             <span class="subtitulo"> </span>
                         </div>
-
                     </a>
 
-                </li>
-
-                <li data-aos="fade-right">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                    <!--chat grupal-->
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===3" (click)="cargarChat(cuesp.chat.idChat)">
+                        <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/gcc.png" alt="">
                         </div>
-
-                    </a>
-
-                </li>
-
-                <li data-aos="fade-left" data-aos-anchor-placement="top-bottom">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
+                        <div class="util" >
+                            
+                            <span> {{cuesp.chat.nombre}}</span>
+                            <span class="subtitulo"> </span>
                         </div>
-
                     </a>
 
                 </li>
-                <li data-aos="fade-right" data-aos-anchor-placement="top-bottom">
-                    <a>
 
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
-                        </div>
-
-                    </a>
-
-                </li>
-                <li data-aos="fade-left" data-aos-anchor-placement="top-bottom">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
-                        </div>
-
-                    </a>
-
-                </li>
-                <li data-aos="fade-right" data-aos-anchor-placement="top-bottom">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
-                        </div>
-
-                    </a>
-
-                </li>
-                <li data-aos="fade-left" data-aos-anchor-placement="top-bottom">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
-                        </div>
-
-                    </a>
-
-                </li>
-                <li data-aos="fade-right" data-aos-anchor-placement="top-bottom">
-                    <a>
-
-                        <div class="cont-img"><img class="header-image"
-                                src="../../../assets/imgs/page/backiee-78859.jpg" alt=""></div>
-                        <div class="util">
-                            <span>grupo websockets</span>
-                            <span class="subtitulo"> alguien esta escribiendo... </span>
-                        </div>
-
-                    </a>
-
-                </li>
             </ul>
         </div>
     </div>
 
     <div class="cont-chat">
 
-        <div class="cont-titulo">
+        <div class="cont-titulo bar-top">
             <button class="btn" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
                 [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="'rgba(51, 0, 255,.1)'"
                 (click)="toggleListChat()">
@@ -206,15 +132,15 @@
             <span class="example-spacer"></span>
             <mat-icon>more_vert</mat-icon>
         </div>
-        <div class="groups" id="divChat" #scrollMe >
+        <div class="groups" id="divChat" #scrollMe>
 
 
             <ul *ngFor="let m of mensajes;">
                 <!-- mensajes de otros -->
-                <li *ngIf="m.username !== user.nombre && m.tipo !=='NUEVO_USUARIO'">
+                <li *ngIf="m.texto !== user.username && m.tipo !=='NUEVO_USUARIO'">
                     <div>
                         <div>
-                            <p>{{m.username}}</p>
+                            <p>{{m.texto}}</p>
                             <div>
                                 <span>{{m.texto}}</span>
                                 <p>
@@ -227,7 +153,7 @@
 
                 <li *ngIf=" m.tipo === 'NUEVO_USUARIO'" [ngClass]="{'notificacion': m.tipo ==='NUEVO_USUARIO' }">
                     <div>
-                        nuevo usuario conectado {{m.username}}
+                        nuevo usuario conectado {{m.texto}}
                     </div>
                 </li>
 
@@ -247,10 +173,10 @@
                     </li> -->
 
                 <!-- tus mensajes (con la directiva *ngIf se controla esto) -->
-                <li class="tu_li" *ngIf="m.username === user.nombre && m.tipo !=='NUEVO_USUARIO'">
+                <li class="tu_li" *ngIf="m.texto === user.username && m.tipo !=='NUEVO_USUARIO'">
                     <div>
                         <div>
-                            <p>{{m.username}}</p>
+                            <p>{{m.texto}}</p>
                             <div>
                                 <span>{{m.texto}}</span>
                                 <p>
@@ -289,8 +215,6 @@
                     </li> -->
             </ul>
         </div>
-
-
         <div class="acctions">
 
             <div class="cont-input-esp ">

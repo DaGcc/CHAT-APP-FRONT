@@ -15,7 +15,9 @@ import { MaterialModule } from '../material/material.module';
   imports: [
     CommonModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
     // ReactiveFormsModule
   ]
 })

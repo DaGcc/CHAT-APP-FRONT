@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
+import { guardFn } from '../guards/guard-fn';
 
 
 const routes: Routes = [
@@ -14,12 +15,13 @@ const routes: Routes = [
       {
         path:'',
         component: HomeComponent
+        
       },
       {
         path: 'chat',
         component:ChatComponent
       }
-    ]
+    ],canActivate:[guardFn]
   },
 
   // {

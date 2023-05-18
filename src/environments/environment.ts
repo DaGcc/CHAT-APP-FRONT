@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  USUARIO: 'usuario'
+  USUARIO: 'usuario',
+  HOST:'http://localhost:8080',
+  REINTENTOS: 3
 };
 
 /*

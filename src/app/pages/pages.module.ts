@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ChatEdicionDialogComponent } from './chat/chat-edicion-dialog/chat-edicion-dialog.component';
 
 
 
@@ -14,7 +15,8 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     PagesComponent,
     ChatComponent,
-    HomeComponent
+    HomeComponent,
+    ChatEdicionDialogComponent
   ],
   imports: [
     CommonModule,

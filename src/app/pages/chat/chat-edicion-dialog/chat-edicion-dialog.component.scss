@@ -1,0 +1,158 @@
+* {
+    box-sizing: border-box;
+}
+
+.cont-app-dialog-chat {
+    width: 400px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.cont-tab-group {
+    width: 100% !important;
+}
+
+/*********parte de field y buttom*********/
+.cont-max {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px 0 10px 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.cont-form {
+    padding: 10px;
+    width: 80%;
+}
+
+.cont-field>* {
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+}
+
+.cont-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
+.cont-btn>button {
+    background-color: var(--color-mor-az-f0);
+    border-radius: 40px;
+}
+
+/*********parte de listas de amigos a agregar*********/
+
+.cont-field-tool {
+    width: 100%;
+    max-height: 200px;
+    overflow-x: none;
+    overflow-y: auto;
+}
+
+.cont-field-tool mat-toolbar{
+    background-color: var(--color-gris-oscuro);
+    border-radius: 7px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-top: 3px;
+} 
+
+.cont-info {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    font-weight: 300;
+    font-size: medium;
+    user-select: none;
+    color: #fff;
+}
+
+.cont-info span:first-child {
+    margin-bottom: -15%;
+}
+
+.cont-info span:last-child {
+    font-size: small;
+    color: var(--color-text-opaco);
+}
+
+
+
+.cont-field-tool::-webkit-scrollbar-track {
+    background-color: transparent;
+    /*color de la barra de fondo*/
+}
+
+.cont-field-tool::-webkit-scrollbar {
+    /*fondo*/
+    width: 15px;
+    opacity: 0;
+}
+
+.cont-field-tool::-webkit-scrollbar-thumb {
+    /*barra*/
+    background-color: var(--color-mor-az-f0);
+    border: solid transparent;
+    border-width: 5px;
+    background-clip: padding-box;
+    border-radius: 1.5rem;
+}
+
+
+/****************************************/
+/***********estilos del 2do tab**********/
+/****************************************/
+.secondTab .cont-form{
+    width: 100%;
+}
+.secondTab .cont-form .cont-field{
+    width: 90%;
+    margin: auto;
+}
+.secondTab .cont-btn{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.secondTab .cont-btn button{
+    width: 47%;
+}
+.secondTab .cont-btn button:last-child{
+    background-color: var(--color-warn-mat);
+}
+
+@media screen and (max-width:600px) {
+
+    .cont-app-dialog-chat {
+        width: 300px;
+    }
+
+    .cont-max {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cont-form {
+        padding: 10px;
+        width: 100%;
+    }
+
+    .cont-field>* {
+        width: 100%;
+    }
+
+    .cont-btn {
+        width: 100%;
+    }
+
+    .cont-btn>button {
+        width: 100%;
+    }
+
+}

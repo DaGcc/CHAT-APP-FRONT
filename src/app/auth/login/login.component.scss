@@ -2,19 +2,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Ubuntu', sans-serif !important
 }
 
 .cont-ads {
     height: 100%;
-    background-color: #E5ECF9;
+    background-color: none;
 }
 
 .container {
     display: flex;
-    height: 100%;
-    width: 100%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    // box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     position: absolute;
     top: 0;
     left: 0;
@@ -25,17 +22,15 @@
 }
 
 .info {
-    background-image: url(../../../assets/imgs/auth/3e994d06-e557-4bb7-a16e-4f93275fcfb7.jfif);
+    // border-radius: 0 40px 40px 0;
+    box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.141);
+    background-image: url(../../../assets/imgs/auth/auth.png);
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size:auto;
     text-align: center;
     padding: 150px 50px;
     width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
 .txt-1 {
@@ -55,7 +50,7 @@
 
 .info hr {
     width: 55px;
-    border: 4px solid #17202A;
+    border: 4px solid #4F83AB;
     margin-left: 170px;
     margin-bottom: 25px;
 }
@@ -66,22 +61,28 @@
 }
 
 .form {
-    padding: 150px 100px;
+
+    // padding: 150px 100px;
     width: 40%;
     text-align: center;
-    background-color: #fff;
-
+    margin: auto;
+    padding: 0px 5%;
+    position: relative;
+    font-family: 'Ubuntu', sans-serif !important
 }
 
 .form h2 {
     color: #4F83AB ;
-    font-size: 30px;
+    font-size:xx-large;
+    font-weight: 700;
     margin-bottom: 25px;
+    font-family: 'Ubuntu', sans-serif !important
 }
 
 .form p {
     font-size: 16px;
-    color: #3b3a3a;
+    font-weight: 500;
+    color: #4F83AB;
     margin-bottom: 25px;
 }
 
@@ -121,11 +122,6 @@
 
 @media(max-width: 990px) {
 
-    .container{
-        width: 350px;
-        height: 600px;
-        // margin-top: 100px;
-    }
 
     .info {
         display: none;

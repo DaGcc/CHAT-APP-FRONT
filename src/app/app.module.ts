@@ -10,6 +10,9 @@ import { MaterialModule } from './material/material.module';
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ServerErrorInterceptor } from './interceptor/server-error.interceptor';
+import { PagesHttpModule } from './pages-http/pages-http.module';
 
 /************************COMPONENTES*************************/
 
@@ -17,17 +20,24 @@ import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule, 
     PagesModule,
-    AuthModule
+    PagesHttpModule,
+    AuthModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:ServerErrorInterceptor,//estte es la clase que he creado en _shared
+      multi:true,//esto para aceptar multiples peticiones
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

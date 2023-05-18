@@ -1,0 +1,152 @@
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body{
+    background-color: #f8f8f8;
+    width: 100%;
+    overflow: hidden;
+}
+.font{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.conteiner{
+    margin: auto;
+    width: 90%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+}
+
+.img-back{
+    width: 60%;
+    height: 100%;
+    background-image: url(../../../assets/imgs/http/401-http.png);
+    background-repeat: no-repeat;
+    background-size:contain;
+    /* background-attachment: fixed; */
+    background-position: center;
+    /* border: 1px solid #000; */
+}
+
+.cont-text{
+    margin-right: 5%;
+    width: 35%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* border: 1px solid #000; */
+}
+
+
+.cont-tittle{
+    margin: auto;
+}
+.tittle{
+    position: relative;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    font-size:45px;
+    border-bottom: 20px solid #FF9900;
+    width: fit-content;
+}
+.util {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: -32px;
+    left: -15px;
+    background: #000000;
+}
+
+.cont-sub-tittle{
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.sub-tittle{
+    font-family: 'Ubuntu', sans-serif;
+    text-align: center;
+    font-weight: 300;
+    font-size: 20px;
+    /* line-height: 110%; */
+}
+
+.cont-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+}
+.btn{
+    width: 100%;
+    background-color: #FF9900;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    border-radius: 20px;
+}
+
+
+
+@media screen and (max-width:830px) {
+    .tittle {
+        position: relative;
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: 500;
+        font-size: 35px;
+        border-bottom: 20px solid #FF9900;
+        width: fit-content;
+    }
+
+    .cont-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+    }
+
+
+}
+
+
+@media screen and (max-width:640px) {
+    .img-back {
+        width: 100%;
+        height: 35vh;
+        background-image: url(../../../assets/imgs/http/401-http.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        /* background-attachment: fixed; */
+        background-position: center;
+        /* border: 1px solid #000; */
+    }
+
+    .conteiner {
+        width: 100%;
+        padding-bottom: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .cont-text {
+        margin-right: 0%;
+        width: 80%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-evenly;
+        /* border: 1px solid #000; */
+    }
+
+}

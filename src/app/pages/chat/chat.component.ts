@@ -5,6 +5,17 @@ import * as SockJS from 'sockjs-client';
 import { Mensaje } from 'src/app/models/mensaje';
 import { Usuario } from 'src/app/models/usuario';
 import { environment } from 'src/environments/environment';
+import { ChatService } from './../../services/chat.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Chat } from 'src/app/models/chat';
+import { ChatUsuario } from 'src/app/models/chatUsuario';
+import { map, EMPTY, forkJoin, switchMap } from 'rxjs';
+import { ChatDTO } from 'src/app/_DTOs/chatDTO';
+import { ChatUsuarioEspDTO } from 'src/app/_DTOs/chatUsuariosEspDTO';
+import { ChatEdicionDialogComponent } from './chat-edicion-dialog/chat-edicion-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Overlay } from '@angular/cdk/overlay';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -18,13 +29,14 @@ export class ChatComponent implements OnInit, OnDestroy{
 
   //cliente STOMP -------------------------------------------
   cliente: Client = new Client();
-  // sockJS: any = new SockJS('http://localhost:8080/chat-websocket');
+  sockJS: any = new SockJS('http://localhost:8080/broker');
   //---------------------------------------------------------
 
 
   //PARA ELEMENTOS DEL DOM ----------------------------------
   @ViewChild('scrollMe') private scrollConteiner!: ElementRef ; //tambien se puede usar Element
-
+  RippleAnimationConfig: RippleAnimationConfig = { enterDuration: 700, exitDuration: 800 };
+  colorRiple: string = 'rgba(102, 30, 237, .2)'
   contGroup: any
   //---------------------------------------------------------
 
@@ -32,23 +44,24 @@ export class ChatComponent implements OnInit, OnDestroy{
   //VARIABLES------------------------------------------------
   jsonUserStorage : string = sessionStorage.getItem(environment.USUARIO) || '{"idUsuario":2,"nombre":"two","estado":true,"email":"userTwo@gmail.com","password":"123","color":"#5800ff"}'; //temporal
   user: Usuario = new Usuario();
+  listaChatUsuarioEspDTO: ChatUsuarioEspDTO[] = [];
   mensaje: Mensaje = new Mensaje();
   mensajes: Mensaje[] = []
+  chatPrivado: boolean = false;
   //---------------------------------------------------------
 
   scrollButton() {
     //nativeElement que representa el elemento HTML actual.
-    console.log(this.scrollConteiner)
-    console.log(this.scrollConteiner!.nativeElement.scrollTop)
-    console.log(this.scrollConteiner!.nativeElement.scrollHeight)
-    console.log(this.scrollConteiner!.nativeElement.clientHeight)
+    // console.log(this.scrollConteiner)
+    // console.log(this.scrollConteiner!.nativeElement.scrollTop)
+    // console.log(this.scrollConteiner!.nativeElement.scrollHeight)
+    // console.log(this.scrollConteiner!.nativeElement.clientHeight)
   
     setTimeout(()=>{
-      this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight - this.scrollConteiner!.nativeElement.clientHeight;
+      this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight;
     },100)
 
     // this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight - this.scrollConteiner!.nativeElement.clientHeight;
-
 
     /*CON INTERFAZ NATIVA DE TS/JS "Element"
     this.scrollConteiner!.scrollTop = this.scrollConteiner!.scrollHeight; 
@@ -68,7 +81,8 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     */
   }
 
-  constructor() { }
+  constructor( private chatService : ChatService, private authService : AuthService, private dialog : MatDialog,private overlay: Overlay,
+    private snackBar: MatSnackBar ) { }
 
   // ngAfterViewChecked(): void {
    
@@ -80,14 +94,46 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
 
   ngOnInit(): void {
-    
-    this.contGroup = document.getElementById('listChat');
-    
+    this.user = this.authService.obtenerCredencialesUserstorage();
 
+
+    //analizar mas :,v , solo se que hayu n arreglo dentro de otro arreglo
+    this.chatService.listarChatDeUsuario(this.user.idUsuario).pipe(switchMap((data: Chat[]) => {
+      //aqui me va a botar un arreglo de usuarios de un chat, entondes si hay muchos chats seria usuario[][], por cada chat hay un arreglo de usuario
+        const observables = data.map(chat => this.chatService.listarUsuariosDeChat(chat.idChat));//[]
+        return forkJoin(observables).pipe(
+          map((response: Usuario[][]) => {
+            console.log(response)
+            return data.map((chat, index) => {
+              const cudEspdto: ChatUsuarioEspDTO = new ChatUsuarioEspDTO();
+              cudEspdto.chat = chat;
+              cudEspdto.listaUsuario = response[index];
+              return cudEspdto;
+            });
+          })
+        );
+      })
+    ).subscribe({
+      next: (data: ChatUsuarioEspDTO[]) => {
+        this.listaChatUsuarioEspDTO = data.map(cu => {
+          if(cu.chat.tipoChat?.idTipoChat===1){
+            this.chatPrivado=true;//para desabilitar la opcion de crear chat privados, por si ya tiene uno
+          }
+          return {
+            chat: cu.chat,
+            listaUsuario: cu.listaUsuario.filter(u => u.idUsuario !== this.user.idUsuario )
+          };
+        });
+        console.log(this.listaChatUsuarioEspDTO)
+      }
+    });
+
+
+    this.contGroup = document.getElementById('listChat');
     // console.log(JSON.parse(this.jsonUserStorage) as Usuario)
     this.user = (JSON.parse(this.jsonUserStorage) as Usuario);
-    this.mensaje.username = this.user.nombre;
-    this.mensaje.color = this.user.color;
+    this.mensaje.texto = this.user.username;
+    this.mensaje.texto = this.user.color;
 
     this.conectar();
     //RETORNA EL SOCKJS PARA NO USAR EL WEBSOCKET NATIVO DEL HTML
@@ -110,8 +156,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
   //LOGICA DESPUES DE CONECTARNOS CON EL EVENTO
   logica() {
     this.cliente.webSocketFactory = () => {
-      let sockJs: any = new SockJS("http://localhost:8080/broker");
-      return sockJs
+      return this.sockJS;
     }
     //METODO/ENVENTO QUE EJECUTARA LAS SUBSCRIPCIONES CUANDO NOS CONECTEMOS
     this.cliente.onConnect = frame => {
@@ -129,7 +174,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
       this.cliente.subscribe('/chat/mensaje', e => {
         let mensaje: Mensaje = JSON.parse(e.body) as Mensaje; //castig por que el broke devuelve tipo String y lo nesecitamos a tipo Mensaje
         mensaje.fecha = new Date(mensaje.fecha!)
-        console.log(mensaje)
+        // console.log(mensaje)
         this.mensajes.push(mensaje)
         this.scrollButton();
       })
@@ -151,12 +196,12 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
   }
 
-
+  
 
   escribiendo() { 
     this.cliente.publish({
       destination: '/app/escribiendo',
-      body: this.user.nombre
+      body: this.user.username
     })
   }
 
@@ -169,9 +214,6 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     })
   }
 
-  addchat(tipo: string) {
-
-  }
 
   cambiarEstadoUser(est: boolean) {
 
@@ -185,6 +227,48 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
       this.contGroup?.classList.add('cont-groups-ts')
     }
   }
+
+  //servicios REST's 
+  cargarChat(idChat : number){
+    console.log(idChat)
+  }
+
+
+
+  addchat(idTipo : number){
+    // let a : Amigos = this.amigos?.id!=null? this.amigos : new Amigos();
+    let data : {tipo:string,titulo:string,user: Usuario,amigos:any}
+    let a : any = "";
+    if(idTipo===3){
+      data = {tipo:'g',titulo:'Crear grupo', user:this.user, amigos : a}
+    }else if(idTipo===2){
+      data = {tipo:'p',titulo:'Crear chat con un amigo',user:this.user, amigos : a}
+    }else if(idTipo===1){
+      data = {tipo:'p',titulo:'Crear tu chat privado',user:this.user, amigos : a}
+    }
+    // console.log(data!)
+    const dialog = this.dialog.open(ChatEdicionDialogComponent,{
+      scrollStrategy: this.overlay.scrollStrategies.noop(),
+      autoFocus: false,
+      // disableClose: true,
+      data: data!
+    })
+    dialog.afterClosed().subscribe((data:ChatDTO)=>{
+      console.log(data)
+      if(data!=undefined){
+        console.log(data)
+        this.cliente.publish({
+          destination: '/app/add/chat',
+          body: JSON.stringify(data)
+        })
+      }else{
+        this.snackBar.open('NO CREASTE EL CHAT','AVISO',{
+          duration: 2000
+        })
+      }
+    })
+  }
+
 }
 
 

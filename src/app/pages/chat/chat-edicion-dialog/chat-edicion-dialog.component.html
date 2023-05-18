@@ -1,0 +1,99 @@
+<div class="cont-app-dialog-chat">
+
+    <mat-tab-group mat-align-tabs="center" class="cont-tab-group">
+        <!-- primero: para buscar amigos y agregar a grupo, mas no personal -->
+        <mat-tab label="First" id="firstTab" [disabled]="disabledFirstTab">
+
+            <div class="cont-max">
+                <div class="cont-form" *ngIf="data.tipo==='g'">
+                    <form [formGroup]="form">
+                        <div class="cont-field">
+                            <mat-form-field appearance="legacy">
+                                <mat-label>Buscar amigos </mat-label>
+                                <input type="text" matInput formControlName="amigo" [formControl]="miControlAmigo"
+                                    [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let a of filteredOptionsAmigos | async" [value]="a">
+                                        {{a.username}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="cont-form" *ngIf="data.tipo==='p'">
+                    <form [formGroup]="formTwo">
+                        <div class="cont-field">
+                            <mat-form-field appearance="legacy">
+                                <mat-label>Ingrese un número de DNI</mat-label>
+                                <input matInput placeholder="EX. 11111111" type="number" class="example-right-align" formControlName="dni">
+                                <button *ngIf="this.formTwo.value.dni" matSuffix mat-icon-button aria-label="Clear" (click)="formTwo.setValue({'dni':null})">
+                                    <mat-icon>close</mat-icon>
+                                  </button>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                    
+                </div>
+                
+                <div class="cont-btn">
+                    <button mat-flat-button color="primary" *ngIf="data.tipo==='g'" [disabled]="form.invalid || disabledFirstTab">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                    <button mat-flat-button color="primary" *ngIf="data.tipo==='p'" (click)="buscarAndAgregarAmigo()" [disabled]="formTwo.invalid || this.formTwo.value.dni==null">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="cont-field-tool">
+
+                <mat-toolbar *ngFor="let a of listaAgregar; let i = index">
+                    <div class="cont-info">
+                        <span>{{a.username}}</span>
+                        <span>dni:{{a.dni}}</span>
+                    </div>
+
+                    <span class="example-spacer"></span>
+                    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+                        color="warn" (click)="removerAmigo(i)">
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </mat-toolbar>
+
+            </div>
+
+        </mat-tab>
+
+        <!-- segundo: para confirmar y poner un nombre -->
+        <mat-tab label="Second" id="secondTab" [disabled]="listaAgregar.length==0 || disabledSecondTab">
+            <div class="secondTab">
+                <div class="cont-form">
+                    <form [formGroup]="formThree" #FormThree="ngForm">
+                        <div class="cont-field">
+                            <mat-form-field appearance="legacy">
+                                <mat-label>Escriba el nombre del {{data.tipo==='p'? 'chat personal':'chat grupal'}}</mat-label>
+                                <input matInput placeholder="EX. 41111111" formControlName="nombreChat">
+                            </mat-form-field>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="cont-btn">
+                    <button mat-flat-button color="primary" (click)="crearChat()">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                    <button mat-flat-button color="primary">
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </mat-tab>
+    </mat-tab-group>
+
+</div>

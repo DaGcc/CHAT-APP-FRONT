@@ -2,24 +2,37 @@
 
     <div class="container">
         <div class="info">
-            <p class="txt-1"> Gracias por visitarnos</p>
-            <h2>Bienvenido de nuevo</h2>
-            <hr>
-            <p class="txt-2">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum molestias exercitationem ipsum vel
-                suscipit reprehenderit omnis officia deleniti expedita! Cum ab beatae libero dolorum facilis vel cumque
-                natus temporibus autem?
-            </p>
         </div>
         <div class="form" >
+
             <h2>Login</h2>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis corrupti sed sapiente libero
-                molestiae
-                accusantium assumenda repellendus sint minima nemo voluptatibus, dolore adipisci nobis architecto
-                blanditiis! Quo quisquam ducimus temporibus?
+                Inicia sesión para compartir ideas interesantes y productivas con tus amigos.
             </p>
-            <div class="inputs">
+
+            
+            <form [formGroup]="formUser" (ngSubmit)="login()" class="inputs" #fr = "ngForm">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput [formControl]="email">
+                    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [formControl]="password" [type]="hide ? 'password' : 'text'">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <a>Olvidaste tu contraseña?</a>
+
+                <button mat-raised-button class="submit" type="submit" color="primary">Loguearse</button>
+            </form>
+
+            <!-- <div class="inputs">
 
                 <input type="email" class="box" placeholder="Ingresa tu correo" [(ngModel)]="emailInput">
                 <input type="password" class="box" placeholder="Ingresa tu contraseña" [(ngModel)]="passInput">
@@ -28,8 +41,8 @@
 
 
             </div>
-            <!-- <input type="submit" value="Login" class="submit"> -->
-            <button type="button" (click)="login()" class="submit">LOGIN</button>
+            <input type="submit" value="Login" class="submit">
+            <button type="button" (click)="login()" class="submit">LOGIN</button> -->
         </div>
     </div>
 </div>
