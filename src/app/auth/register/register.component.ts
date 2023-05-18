@@ -11,17 +11,23 @@ export class RegisterComponent implements OnInit {
   hide: boolean = true;
   formUser: FormGroup;
 
-  username: FormControl = new FormControl('', Validators.required);
+  dni: FormControl = new FormControl('', [Validators.required, Validators.min(100000000),
+                                          Validators.max(99999999)]);
+  username: FormControl = new FormControl('', [Validators.required, Validators.minLength(3),
+                                               Validators.maxLength(15)]);
+  rutaFoto: FormControl = new FormControl('');
+  genero: FormControl = new FormControl('', Validators.required);
   email: FormControl = new FormControl('', [Validators.email, Validators.required]);
   password: FormControl = new FormControl('', Validators.required);
-  confimPassword: FormControl = new FormControl('', Validators.required);
 
   constructor(private fb: FormBuilder) {
     this.formUser = this.fb.group({
-      username: ['', Validators.required],
+      dni: ['', [Validators.required, Validators.min(10000000), Validators.max(99999999)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
+      genero: ['', Validators.required],
+      rutaFoto: [''],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
+      password: ['', Validators.required]
     });
    }
 
@@ -29,7 +35,9 @@ export class RegisterComponent implements OnInit {
   }
 
   operar(): void{
-    console.log(this.formUser.value['username'] + ' ' + this.formUser.value['password']);
+    console.log(this.formUser.value['username'] + ' ' + 
+    this.formUser.value['password'] + ' ' + this.formUser.value['genero'] + ' ' + 
+    this.formUser.value['rutaFoto']);
   }
 
 }
