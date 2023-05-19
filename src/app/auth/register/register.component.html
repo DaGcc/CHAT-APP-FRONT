@@ -48,7 +48,7 @@
     
             </div>
 
-            <button mat-raised-button type="submit" color="primary">Registrarse</button>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!formUser.valid">Registrarse</button>
 
             <div class="irLogin">
                 <h3>¿Tienes una cuenta?, <span>Inicia Sesión!</span></h3>

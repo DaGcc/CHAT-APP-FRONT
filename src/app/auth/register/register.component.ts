@@ -1,43 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 
-  hide: boolean = true;
-  formUser: FormGroup;
+    hide: boolean = true;
+    public formUser: FormGroup;
 
-  dni: FormControl = new FormControl('', [Validators.required, Validators.min(100000000),
-                                          Validators.max(99999999)]);
-  username: FormControl = new FormControl('', [Validators.required, Validators.minLength(3),
-                                               Validators.maxLength(15)]);
-  rutaFoto: FormControl = new FormControl('');
-  genero: FormControl = new FormControl('', Validators.required);
-  email: FormControl = new FormControl('', [Validators.email, Validators.required]);
-  password: FormControl = new FormControl('', Validators.required);
+    constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+        this.formUser = this.fb.group({
+            dni: ['', [Validators.required, Validators.min(10000000), Validators.max(99999999)]],
+            username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15),
+                             Validators.pattern('[a-zA-Z._-]*')]],
+            genero: ['', Validators.required],
+            rutaFoto: [''],
+            email: ['', [Validators.required, Validators.pattern(/^([a-zA-Z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/)]],
+            password: ['', [Validators.required, Validators.minLength(8)]]
+        });
+    }
 
-  constructor(private fb: FormBuilder) {
-    this.formUser = this.fb.group({
-      dni: ['', [Validators.required, Validators.min(10000000), Validators.max(99999999)]],
-      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
-      genero: ['', Validators.required],
-      rutaFoto: [''],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
-   }
+    ngOnInit(): void {
+    }
 
-  ngOnInit(): void {
-  }
+    operar(): void {
 
-  operar(): void{
-    console.log(this.formUser.value['username'] + ' ' + 
-    this.formUser.value['password'] + ' ' + this.formUser.value['genero'] + ' ' + 
-    this.formUser.value['rutaFoto']);
-  }
+        let user = {
+            dni: this.formUser.get('dni')?.value,
+            username: this.formUser.get('username')?.value,
+            genero: this.formUser.get('genero')?.value,
+            rutaFoto: this.formUser.value['rutaFoto'],
+            email: this.formUser.get('email')?.value,
+            password: this.formUser.get('password')?.value,
+            color: '#ff0',
+            estado: true
+        }
+
+        console.log(user);
+
+        this.snackBar.open("Registrado Exitosamente", "Éxito", {
+            duration: 2000
+        });
+    }
 
 }
