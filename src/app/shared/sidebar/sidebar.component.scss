@@ -57,6 +57,9 @@ i{
     justify-content: center;
     // background-color: #661eed;
 }
+.perfil-super{
+    position: relative;
+}
 
 .perfil-img{
     user-select: none;
@@ -66,7 +69,26 @@ i{
     width: 100px;
     height: 100px;
     border-radius: 60%;
+    // box-shadow: 0 0 30px -1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 35px -2px rgba(102, 30, 237, 1); //se puede comentar
     overflow: hidden;
+    position: relative;
+}
+.btn-p{
+    width: 37px;
+    height: 37px;
+    font-size: 55%;
+    background-color: #fff;
+    color: #661eed;
+    border-radius: 100%;
+    position: absolute;
+    top:-5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 6px solid #000;
 }
 .cont-img{
     height: 100%;

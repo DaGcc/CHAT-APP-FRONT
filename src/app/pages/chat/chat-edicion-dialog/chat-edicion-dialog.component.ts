@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject  } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/usuario';
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { Chat } from 'src/app/models/chat';
 import { ChatDTO } from 'src/app/_DTOs/chatDTO';
+import { ChatUsuario } from 'src/app/models/chatUsuario';
 
 @Component({
   selector: 'app-chat-edicion-dialog',
@@ -25,126 +26,167 @@ export class ChatEdicionDialogComponent implements OnInit {
   listaAgregar: Usuario[] = []
 
   /***variables para el autocompletado***/
-  miControlAmigo: FormControl = new FormControl(undefined);
-  filteredOptionsAmigos: Observable<Usuario[]> | undefined;
-  listaAmigos: Usuario[] = []
+  // miControlAmigo: FormControl = new FormControl(undefined);
+  // filteredOptionsAmigos: Observable<Usuario[]> | undefined;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { tipo: string, titulo: string, user: Usuario, amigos: any }, private authService: AuthService,
-    private dialogRef: MatDialogRef<ChatEdicionDialogComponent>, private snackBar: MatSnackBar) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { idTipoChat: number, titulo: string, user: Usuario, amigos: Usuario[] },
+    private authService: AuthService, private dialogRef: MatDialogRef<ChatEdicionDialogComponent>, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
     this.formThree = new FormGroup({
       'nombreChat': new FormControl(undefined, Validators.required)
     })
-    console.log(this.data)
-    if (this.data.tipo === 'g') {
+    //console.log(this.data)
+    if (this.data.idTipoChat === 3) {
       this.form = new FormGroup({
-        'amigo': this.miControlAmigo
+        'valor': new FormControl(undefined)
       })
 
-      if (!(this.data.amigos.listaAmigos.length == 0)) {
-
-      } else {
-        this.disabledFirstTab = true;
-        this.disabledSecondTab = true;
-        this.form.get('amigo')?.disable();
-        this.formThree.get('nombreChat')?.disable();
-        let ac = this.snackBar.open('NO PUEDE CREAR UN GRUPO, INTENTE AGREGAR AMIGOS EN SU LISTA', 'OK')
-        this.dialogRef.disableClose = true;
-        ac.onAction().subscribe(() => {
-          this.dialogRef.close();
-        })
-      }
-
-    } else if (this.data.tipo === 'p') {
+    } else if (this.data.idTipoChat === 2) {
       //busqueda por dni
       this.formTwo = new FormGroup({
         'dni': new FormControl(undefined, [Validators.max(99999999), Validators.min(11111111)])
       })
     }
-
-    this.listaAmigos = this.data.amigos.listaAmigos
-    // this.filteredOptionsAmigos = this.miControlAmigo.valueChanges.pipe(map(val => this.filtarAmigos(val)))
-
-
   }
 
-  buscarAndAgregarAmigo() {
-    // this.userService.buscarPorDni(this.formTwo.value.dni).subscribe({
-    //   next: (data: User) => {
-    //     if (data != null) {
-    //       if (this.data.user.dni !== data.dni) {
-    //         this.agregarListaAmigo(data);
-    //       } else {
-    //         this.snackBar.open('NO PUEDES AGREGARTE A TI MISMO CRACK', 'AVISO', {
-    //           duration: 2500
-    //         })
-    //       }
-    //     } else {
-    //       this.snackBar.open('USUARIO NO EXISTE', 'AVISO', {
-    //         duration: 2500
-    //       })
-    //     }
-    //   }
-    // })
+  //para chat de dos
+  buscarAmigo() {
+    let parametroBuscador = this.data.idTipoChat===2? this.formTwo.value.dni : this.form.value.valor;
+    this.authService.encontrarUsuarioPorEmilPorDniPorUsername(parametroBuscador).subscribe({
+      next: (data: Usuario) => {
+        // //console.log(data)
+        // //console.log(this.data.amigos)
+        if (data != null) {
+
+          let estado: boolean = true;
+          if (data.dni !== this.data.user.dni) {//comprobamos de que esa data sea diferente a mi
+            if(this.data.idTipoChat!==3){
+              for (let a of this.data.amigos) {//comprobamos si a ese usuario lo tengo agregado
+                if (a.idUsuario === data.idUsuario) {
+                  estado = false;
+                  break; //detengo la iteracion si encontro a un amigo que coincida con el usuario buscado
+                }
+              }
+              estado ? this.agregarListaAmigo(data) : this.snackBar.open(`${data.username} YA ESTA EN TU LISTA DE AMIGOS/CHAT`, 'AVISO', {
+                duration: 2500
+              });
+            }else{
+              this.agregarListaAmigo(data);
+            }
+
+          } else {
+            let m: string = this.data.user.genero === 'M' ? "MISMO" : "MISMA";
+            this.snackBar.open(`NO PUEDES AGREGARTE A TI ${m} ${this.data.user.username}`, ':v', {
+              duration: 2500
+            })
+          }
+
+
+        }
+      }
+    })
   }
 
   agregarListaAmigo(data: Usuario) {
 
-    // let bd: boolean = true
-    // for (let u of this.listaAgregar) {
-    //   if (u.dni === data.dni) {
-    //     this.snackBar.open('ESTE COMPA YA EXISTE EN TU LISTA', 'AVISO', {
-    //       duration: 2500
-    //     })
-    //     bd = false;
-    //     break;
-    //   } else {
-    //     bd = true;
-    //   }
-    // }
-    // if (bd == true) {
-    //   this.listaAgregar.push(data)
-    // }
+    let bd: boolean = true;
 
-    // if (this.data.tipo == 'p' && this.listaAgregar.length > 0 && this.listaAgregar.length <= 1) {
-    //   this.formTwo.get('dni')?.setValue(null)  //o this.formTwo.setValue({'dni':null})
-    //   this.formTwo.get('dni')?.disable()
-    // }
+    for (let u of this.listaAgregar) {
+      if (u.dni === data.dni) {
+        this.snackBar.open(`${data.username} YA ESTA EN LISTA`, 'AVISO', {
+          duration: 2500
+        })
+        bd = false;
+        break;
+      }
+      //  else {
+      //   bd = true;
+      // }
+    }
+    if (bd == true) {
+      if(this.data.idTipoChat===3){ this.form.get('valor')?.setValue(null) }
+      this.listaAgregar.push(data)
+    }
+
+    //seabilitamos si ya busco correctamente a un amigo para chat de dos
+    if (this.data.idTipoChat == 2 && this.listaAgregar.length > 0 && this.listaAgregar.length <= 1) {
+      this.formTwo.get('dni')?.setValue(null)  //o this.formTwo.setValue({'dni':null})
+      this.formTwo.get('dni')?.disable()
+    }
   }
 
   removerAmigo(index: number) {
-    // console.log(typeof index)
-    // this.listaAgregar.splice(index, 1);
+    //console.log(typeof index)
+    this.listaAgregar.splice(index, 1);
 
-    // if (this.data.tipo == 'p') {
-    //   this.formTwo.get('dni')?.enable()
-    // }
+    if (this.data.idTipoChat == 2) {
+      this.formTwo.get('dni')?.enable()
+    }
   }
 
 
   crearChat() {
-    // let chatUserDto: ChatDTO = new ChatDTO();
-    // let chat: Chat = new Chat();
-    // chat.nombre = this.formThree.value['nombreChat'];
+    let fechaISO: string
+    //obtenemos la diferencia de ms de nuestra hora local hacia la hora UTC
+    let dms = new Date().getTimezoneOffset() * 60000;
+    let isoDate = new Date(Date.now() - dms).toISOString();
+    fechaISO = isoDate;
+
+    let chatDTO: ChatDTO = new ChatDTO();//enviaremos esto
+    this.listaAgregar.push(this.data.user)
+    let chat: Chat = new Chat();
+
+    let listaChatUsuario: ChatUsuario[] = [];
+
+    if (this.data.idTipoChat === 3) {
+      chat.nombre = this.formThree.value['nombreChat'];
+      chat.tipoChat.idTipoChat = 3;
+      chat.fechaCreacion = fechaISO;
+    } else {
+      chat.tipoChat.idTipoChat = 2;
+    }
+
+    this.listaAgregar.forEach(u => {
+      let chatUsusario: ChatUsuario = new ChatUsuario();
+      chatUsusario.usuario = u;
+      chatUsusario.fechaUnion = fechaISO
+      //mejorar : evaluar si el chat es de dos o de grupo, para asignar scope
+      if(this.data.idTipoChat === 2){
+        chatUsusario.scopeUser = "admin"
+      }else{
+        if (u.idUsuario === this.data.user.idUsuario) {
+          chatUsusario.scopeUser = "admin"
+        } else {
+          chatUsusario.scopeUser = "invitado"
+        }
+      }
+
+      listaChatUsuario.push(chatUsusario)
+    })
+    chatDTO.chat = chat;
+    chatDTO.listaChatUsuario = listaChatUsuario;
 
 
+    //console.log(chatDTO)
+    this.dialogRef.close(chatDTO);
+    
     // chat.tipo = this.data.tipo;
     // this.listaAgregar.forEach(a => {
     //   chat.listaUser.push(a);
     // })
     // chat.listaUser.push(this.data.user);
-    // console.log(chat)
-    // chatUserDto.chat = chat;
-    // chatUserDto.user = this.data.user;
-    // this.dialogRef.close(chatUserDto)
+    // //console.log(chat)
+    // chatDTO.chat = chat;
+    // chatDTO.user = this.data.user;
+    // this.dialogRef.close(chatDTO)
   }
 
   /***funciones para el autocompletado***/
   filtarAmigos(val: any) {
-    // console.log(val.id != undefined && val.userName != undefined)
+    // //console.log(val.id != undefined && val.userName != undefined)
     // if (val.id != undefined) {
     //   return this.listaAmigos.filter(a => {
     //     return a.username?.toLowerCase().includes(val.userName.toLowerCase()) || a.dni?.toString().includes(val.dni?.toString())

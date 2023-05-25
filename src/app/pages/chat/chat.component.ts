@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RippleAnimationConfig } from '@angular/material/core';
-import { Client, IFrame } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import { Mensaje } from 'src/app/models/mensaje';
 import { Usuario } from 'src/app/models/usuario';
@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 import { ChatService } from './../../services/chat.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Chat } from 'src/app/models/chat';
-import { ChatUsuario } from 'src/app/models/chatUsuario';
 import { map, EMPTY, forkJoin, switchMap } from 'rxjs';
 import { ChatDTO } from 'src/app/_DTOs/chatDTO';
 import { ChatUsuarioEspDTO } from 'src/app/_DTOs/chatUsuariosEspDTO';
@@ -16,12 +15,15 @@ import { ChatEdicionDialogComponent } from './chat-edicion-dialog/chat-edicion-d
 import { MatDialog } from '@angular/material/dialog';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MensajeService } from 'src/app/services/mensaje.service';
+import { NotificacionUser } from 'src/app/_DTOs/notificacionUser';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy{
+export class ChatComponent implements OnInit, OnDestroy {
 
 
   RippleAnimationConfing: RippleAnimationConfig = { enterDuration: 600, exitDuration: 500 };
@@ -30,11 +32,13 @@ export class ChatComponent implements OnInit, OnDestroy{
   //cliente STOMP -------------------------------------------
   cliente: Client = new Client();
   sockJS: any = new SockJS('http://localhost:8080/broker');
+  suscripcionChat: any;
+  suscripcionNotificacion: any
   //---------------------------------------------------------
 
 
   //PARA ELEMENTOS DEL DOM ----------------------------------
-  @ViewChild('scrollMe') private scrollConteiner!: ElementRef ; //tambien se puede usar Element
+  @ViewChild('scrollMe') private scrollConteiner!: ElementRef; //tambien se puede usar Element
   RippleAnimationConfig: RippleAnimationConfig = { enterDuration: 700, exitDuration: 800 };
   colorRiple: string = 'rgba(102, 30, 237, .2)'
   contGroup: any
@@ -42,13 +46,18 @@ export class ChatComponent implements OnInit, OnDestroy{
 
 
   //VARIABLES------------------------------------------------
-  jsonUserStorage : string = sessionStorage.getItem(environment.USUARIO) || '{"idUsuario":2,"nombre":"two","estado":true,"email":"userTwo@gmail.com","password":"123","color":"#5800ff"}'; //temporal
+  jsonUserStorage: string = sessionStorage.getItem(environment.USUARIO) || '{"idUsuario":2,"nombre":"two","estado":true,"email":"userTwo@gmail.com","password":"123","color":"#5800ff"}'; //temporal
   user: Usuario = new Usuario();
+  listaUserAmigo: Usuario[] = []
   listaChatUsuarioEspDTO: ChatUsuarioEspDTO[] = [];
+  misChats: Chat[] = [];
+  chatUsuarioEspDTO: ChatUsuarioEspDTO = new ChatUsuarioEspDTO();
   mensaje: Mensaje = new Mensaje();
   mensajes: Mensaje[] = []
-  chatPrivado: boolean = false;
+  chatPrivado: boolean | undefined;
   //---------------------------------------------------------
+
+  notificacion: { idChat: number, detalle: string } | undefined
 
   scrollButton() {
     //nativeElement que representa el elemento HTML actual.
@@ -56,10 +65,10 @@ export class ChatComponent implements OnInit, OnDestroy{
     // console.log(this.scrollConteiner!.nativeElement.scrollTop)
     // console.log(this.scrollConteiner!.nativeElement.scrollHeight)
     // console.log(this.scrollConteiner!.nativeElement.clientHeight)
-  
-    setTimeout(()=>{
+
+    setTimeout(() => {
       this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight;
-    },100)
+    }, 100)
 
     // this.scrollConteiner!.nativeElement.scrollTop = this.scrollConteiner!.nativeElement.scrollHeight - this.scrollConteiner!.nativeElement.clientHeight;
 
@@ -81,12 +90,9 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     */
   }
 
-  constructor( private chatService : ChatService, private authService : AuthService, private dialog : MatDialog,private overlay: Overlay,
-    private snackBar: MatSnackBar ) { }
+  constructor(private chatService: ChatService, private authService: AuthService, private dialog: MatDialog, private overlay: Overlay,
+    private snackBar: MatSnackBar, private mensajeService: MensajeService) { }
 
-  // ngAfterViewChecked(): void {
-   
-  // }
 
   ngOnDestroy(): void {
     this.desconectar();
@@ -94,53 +100,20 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
 
   ngOnInit(): void {
+
     this.user = this.authService.obtenerCredencialesUserstorage();
-
-
-    //analizar mas :,v , solo se que hayu n arreglo dentro de otro arreglo
-    this.chatService.listarChatDeUsuario(this.user.idUsuario).pipe(switchMap((data: Chat[]) => {
-      //aqui me va a botar un arreglo de usuarios de un chat, entondes si hay muchos chats seria usuario[][], por cada chat hay un arreglo de usuario
-        const observables = data.map(chat => this.chatService.listarUsuariosDeChat(chat.idChat));//[]
-        return forkJoin(observables).pipe(
-          map((response: Usuario[][]) => {
-            console.log(response)
-            return data.map((chat, index) => {
-              const cudEspdto: ChatUsuarioEspDTO = new ChatUsuarioEspDTO();
-              cudEspdto.chat = chat;
-              cudEspdto.listaUsuario = response[index];
-              return cudEspdto;
-            });
-          })
-        );
-      })
-    ).subscribe({
-      next: (data: ChatUsuarioEspDTO[]) => {
-        this.listaChatUsuarioEspDTO = data.map(cu => {
-          if(cu.chat.tipoChat?.idTipoChat===1){
-            this.chatPrivado=true;//para desabilitar la opcion de crear chat privados, por si ya tiene uno
-          }
-          return {
-            chat: cu.chat,
-            listaUsuario: cu.listaUsuario.filter(u => u.idUsuario !== this.user.idUsuario )
-          };
-        });
-        console.log(this.listaChatUsuarioEspDTO)
-      }
-    });
-
+    this.cargarChatUser(this.user.idUsuario);
 
     this.contGroup = document.getElementById('listChat');
     // console.log(JSON.parse(this.jsonUserStorage) as Usuario)
     this.user = (JSON.parse(this.jsonUserStorage) as Usuario);
-    this.mensaje.texto = this.user.username;
-    this.mensaje.texto = this.user.color;
 
     this.conectar();
     //RETORNA EL SOCKJS PARA NO USAR EL WEBSOCKET NATIVO DEL HTML
     // this.cliente.webSocketFactory = () => {//SE EJECUTARA LUEGO DE ACTIVAR o ENTRAR EN CONTACATO CON EL SERVIDOR
     //   // console.log('ff')
     //   return this.sockJS;
-      
+
     // }
     this.logica();
   }
@@ -148,9 +121,10 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
   conectar() {
     this.cliente.activate();
   }
-  
+
   desconectar() {
     this.cliente.deactivate();
+    this.cliente == undefined;
   }
 
   //LOGICA DESPUES DE CONECTARNOS CON EL EVENTO
@@ -160,64 +134,130 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     }
     //METODO/ENVENTO QUE EJECUTARA LAS SUBSCRIPCIONES CUANDO NOS CONECTEMOS
     this.cliente.onConnect = frame => {
-      console.log(frame+ "on")
+      console.log(frame + "on")
 
-
-      this.mensaje.tipo = 'NUEVO_USUARIO'
       // console.log(this.mensaje)
-      
-      this.cliente.publish({
-        destination: '/app/mensaje',
-        body: JSON.stringify(this.mensaje)
+
+      this.cliente.subscribe(`/chat/chat-actualizado/${this.user.idUsuario}`, data => {
+        console.log("actualizando")
+        console.log(data.body)
+        this.cargarChatUser(this.user.idUsuario);
       })
 
-      this.cliente.subscribe('/chat/mensaje', e => {
-        let mensaje: Mensaje = JSON.parse(e.body) as Mensaje; //castig por que el broke devuelve tipo String y lo nesecitamos a tipo Mensaje
-        mensaje.fecha = new Date(mensaje.fecha!)
-        // console.log(mensaje)
-        this.mensajes.push(mensaje)
+      this.suscripcionChat = this.cliente.subscribe(`/chat/mensaje/${this.chatUsuarioEspDTO.chat.idChat}`, (e) => {
+        let mensaje: Mensaje = JSON.parse(e.body) as Mensaje;
+        mensaje.fecha = new Date(mensaje.fecha!);
+        console.log(this.chatUsuarioEspDTO?.chat.idChat);
+        this.mensajes.push(mensaje);
+        this.mensaje.texto = undefined;
         this.scrollButton();
-      })
+      });
 
+      this.notificacionFn();
 
-
-      this.cliente.subscribe('/chat/escribiendo', e => {
+      this.cliente.subscribe(`/chat/escribiendo/12`, e => {
         console.log('ejecuto escritura')
         console.log(e.body)
+        this.write = e.body
       })
     };
 
-
-
     //METODO/ENVENTO QUE EJECUTARA LAS SUBSCRIPCIONES CUANDO NOS DESCONECTEMOS
     this.cliente.onDisconnect = (frame) => {
-      console.log(frame+ "of")
+      console.log(frame + "of")
     }
 
   }
 
-  
 
-  escribiendo() { 
-    this.cliente.publish({
-      destination: '/app/escribiendo',
-      body: this.user.username
+  notificacionFn() {
+    // console.log(this.misChats)
+    // console.log(this.listaChatUsuarioEspDTO)
+
+    //esto solo iterara al inicio
+    this.listaChatUsuarioEspDTO.forEach((c, i) => {
+      //crea subscripciones multiples con diferentes idChat, por ende, cuando mande notiicaciones a un chat determinado este buscara dicha subcripcion
+      this.suscripcionNotificacion = this.suscripcionChat = this.cliente.subscribe(`/chat/notificar/${c.chat.idChat}`, data => {
+
+        console.log(i)
+        if (data.body === 'N') {
+          console.log(data.body)
+          this.listaChatUsuarioEspDTO[i].chat.notificacion = 'N'
+          console.log(this.listaChatUsuarioEspDTO[i].chat.notificacion)
+        } else if(data.body===""){  
+          this.listaChatUsuarioEspDTO[i].chat.notificacion = undefined        
+          // console.log(data.body + "en" + c.chat.idChat)
+        } else {
+          this.listaChatUsuarioEspDTO[i].chat.notificacion = data.body          
+          // console.log(data.body + "en" + c.chat.idChat)
+        }
+
+        // this.notificacion!.detalle = data.body;
+
+      })
     })
+
+    console.log(this.listaChatUsuarioEspDTO)
+
   }
 
 
   enviarMensaje() {
-    this.mensaje.tipo = 'MENSAJE'
+    let chat = this.chatUsuarioEspDTO?.chat;
+    chat.listaMensajes = []
+    this.mensaje.chat = chat;
+    this.mensaje.usuario = this.user
+    this.mensaje.tipo = 'M'
+
+    // console.log(this.suscripcionChat)
+    // Publicar el mensaje
     this.cliente.publish({
       destination: '/app/mensaje',
       body: JSON.stringify(this.mensaje)
+    });
+
+    let ue = new NotificacionUser();
+    ue.chat = this.chatUsuarioEspDTO!.chat;
+    ue.usuario = this.user;
+    ue.tipo = "N";
+
+    this.cliente.publish({
+      destination: '/app/notificar',
+      body: JSON.stringify(ue)
     })
   }
+
+  write: string | undefined
+
+  escribiendo(texto: any) {
+    // this.suscripcionNotificacion.unsubscribe();
+    let ue = new NotificacionUser();
+    ue.chat = this.chatUsuarioEspDTO!.chat;
+    ue.usuario = this.user;
+    ue.tipo = "E";
+    // console.log(ue)
+
+    if (texto.trim() === '') {
+      ue.tipo = "NADA";
+    } 
+
+    this.cliente.publish({
+      destination: '/app/notificar',
+      body: JSON.stringify(ue)
+    })
+
+
+    // this.notificacionFn();
+  }
+
+
+
 
 
   cambiarEstadoUser(est: boolean) {
 
   }
+
 
   toggleListChat() {
 
@@ -228,45 +268,145 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     }
   }
 
-  //servicios REST's 
-  cargarChat(idChat : number){
-    console.log(idChat)
+  /**************************************/
+  /************SERVICIOS REST************/
+  /**************************************/
+  cargarChatUser(idUserFn: number) {
+    this.chatPrivado = false;
+    this.listaUserAmigo = [];
+
+    this.chatService.listarChatDeUsuario(idUserFn).pipe(switchMap((data: Chat[]) => {
+      //aqui me va a botar un arreglo de usuarios de un chat, entondes si hay muchos chats seria usuario[][], por cada chat hay un arreglo de usuario
+      this.misChats = data;
+      console.log(this.misChats)
+      const observables = data.map(chat => this.chatService.listarUsuariosDeChat(chat.idChat));//[]
+      return forkJoin(observables).pipe(
+        map((response: Usuario[][]) => {
+          console.log(response)
+          return data.map((chat, index) => {
+            const cudEspdto: ChatUsuarioEspDTO = new ChatUsuarioEspDTO();
+            cudEspdto.chat = chat;
+            cudEspdto.listaUsuario = response[index];
+            return cudEspdto;
+          });
+        })
+      );
+    })
+    ).subscribe({
+      next: (data: ChatUsuarioEspDTO[]) => {
+        console.log(data)
+        this.listaChatUsuarioEspDTO = data.map(cu => {
+          if (cu.chat.tipoChat?.idTipoChat === 1) {
+            this.chatPrivado = true;//para desabilitar la opcion de crear chat privados, por si ya tiene uno
+          }
+          return {
+            chat: cu.chat,
+            listaUsuario: cu.listaUsuario.filter(u => {
+              //se evalua solo si el chat es de dos y que el is de ese usuario sea diferente al mio
+              if (cu.chat.tipoChat?.idTipoChat === 2 && u.idUsuario !== this.user.idUsuario) {
+                this.listaUserAmigo.push(u)//se agrega a lista de amigos en comun
+              }
+              return u.idUsuario !== this.user.idUsuario
+
+            })
+          };
+        });
+        // console.log(this.listaChatUsuarioEspDTO)
+        // console.log(this.listaUserAmigo)
+      }
+    });
+
+  }
+
+  page: number = 0
+  cargarMensajeChat(idChat: number) {
+    this.suscripcionChat.unsubscribe();
+
+    this.chatUsuarioEspDTO = this.listaChatUsuarioEspDTO.find(cu => {
+      return cu.chat.idChat === idChat
+    })!
+    console.log(this.chatUsuarioEspDTO)
+    // this.chatUsuarioEspDTO = JSON.parse(JSON.stringify(lc[0])) as ChatUsuarioEspDTO;
+    // console.log({...lc})
+
+    // this.chatUsuarioEspDTO = {...lc};
+    this.mensajeService.listarChatPaginado(idChat, this.page, 100).subscribe({
+      next: (data: any) => {
+        this.mensajes = data.content as Mensaje[];
+        this.suscripcionChat = this.cliente.subscribe(`/chat/mensaje/${this.chatUsuarioEspDTO.chat.idChat}`, (e) => {
+          let mensaje: Mensaje = JSON.parse(e.body) as Mensaje;
+          mensaje.fecha = new Date(mensaje.fecha!);
+          console.log(this.chatUsuarioEspDTO?.chat.idChat);
+          this.mensajes.push(mensaje);
+          this.mensaje.texto = undefined;
+          this.scrollButton();
+        });
+        this.scrollButton();
+        // console.log(this.mensajes)
+      }
+    });
+
   }
 
 
-
-  addchat(idTipo : number){
+  addchat(idTipoChat: number) {
     // let a : Amigos = this.amigos?.id!=null? this.amigos : new Amigos();
-    let data : {tipo:string,titulo:string,user: Usuario,amigos:any}
-    let a : any = "";
-    if(idTipo===3){
-      data = {tipo:'g',titulo:'Crear grupo', user:this.user, amigos : a}
-    }else if(idTipo===2){
-      data = {tipo:'p',titulo:'Crear chat con un amigo',user:this.user, amigos : a}
-    }else if(idTipo===1){
-      data = {tipo:'p',titulo:'Crear tu chat privado',user:this.user, amigos : a}
-    }
-    // console.log(data!)
-    const dialog = this.dialog.open(ChatEdicionDialogComponent,{
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-      autoFocus: false,
-      // disableClose: true,
-      data: data!
-    })
-    dialog.afterClosed().subscribe((data:ChatDTO)=>{
-      console.log(data)
-      if(data!=undefined){
+    // let data : {tipo:string,titulo:string,user: Usuario,amigos:any} por el momento se pensaja lo de amigos como recursividad
+    let data: { idTipoChat: number, titulo: string, user: Usuario, amigos: Usuario[] }
+
+    //para crear chats grupales o con un amigo
+    if (idTipoChat !== 1) {
+
+      switch (idTipoChat) {
+        case 2: {
+          data = { idTipoChat: 2, titulo: 'Crear chat con un amigo', user: this.user, amigos: this.listaUserAmigo }
+          break;
+        }
+        case 3: {
+          data = { idTipoChat: 3, titulo: 'Crear grupo', user: this.user, amigos: this.listaUserAmigo }
+          break;
+        }
+        default: {
+          break
+        }
+      }
+      // console.log(data!)
+      const dialog = this.dialog.open(ChatEdicionDialogComponent, {
+        scrollStrategy: this.overlay.scrollStrategies.noop(),
+        autoFocus: false,
+        // disableClose: true,
+        data: data!
+      })
+      dialog.afterClosed().subscribe((data: ChatDTO) => {
         console.log(data)
-        this.cliente.publish({
-          destination: '/app/add/chat',
-          body: JSON.stringify(data)
+
+        if (data) {
+          this.snackBar.open('CREANDO CHAT', 'AVISO', {
+            duration: 2000
+          })
+          // console.log(data)
+          this.cliente.publish({
+            destination: `/app/chat-actualizado`,
+            body: JSON.stringify(data)
+          })
+        } else {
+          this.snackBar.open('NO CREASTE EL CHAT', 'AVISO', {
+            duration: 2000
+          })
+        }
+      })
+    } else {
+      if (this.chatPrivado) {
+        this.snackBar.open('YA TIENES CREADO UN CHAT PRIVADO', 'AVISO', {
+          duration: 2000
         })
-      }else{
-        this.snackBar.open('NO CREASTE EL CHAT','AVISO',{
+      } else {
+        this.snackBar.open('CREANDO CHAT PRIVADO', 'AVISO', {
           duration: 2000
         })
       }
-    })
+    }
+
   }
 
 }

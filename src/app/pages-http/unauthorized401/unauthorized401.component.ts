@@ -7,7 +7,9 @@ import { Router } from '@angular/router';
   templateUrl: './unauthorized401.component.html',
   styleUrls: ['./unauthorized401.component.scss']
 })
+
 export class Unauthorized401Component implements OnInit {
+
 
   constructor(private router: Router, private snackBar: MatSnackBar) { }
 

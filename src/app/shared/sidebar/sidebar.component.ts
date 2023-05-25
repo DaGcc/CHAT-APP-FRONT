@@ -51,4 +51,8 @@ export class SidebarComponent implements OnInit {
   }
 
 
+
+  seleccionarArchivo(e : any){
+
+  }
 }

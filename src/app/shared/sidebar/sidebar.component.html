@@ -6,12 +6,19 @@
           <div class="sideBar">
             <div class="perfil-side">
               <div class="perfil">
-
-                <div class="perfil-img">
-                  <div class="cont-img">
-                    <img src="../../../assets/imgs/page/sad.png" alt="">
+                
+                <div class="perfil-super">
+                  <div class="perfil-img">
+                    <div class="cont-img">
+                      <img src="../../../assets/imgs/page/sad.png" alt="">
+                    </div>
+                  </div>
+                  <div class="btn-p" >
+                    <button mat-button  onclick="document.getElementById('iptPerfil').click()"><i class="fa-solid fa-image"></i></button>
+                    <input id="iptPerfil" type="file" style="display: none;" (change)="seleccionarArchivo($event)" >
                   </div>
                 </div>
+
 
                 <div class="perfil-datos">
                   <span>{{user.username| titlecase}} <span>|</span> {{user.dni}}</span>

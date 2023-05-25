@@ -22,13 +22,15 @@
                 [matRippleColor]="'rgba(51, 0, 255,.1)'" (click)="toggleListChat()">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
-            <mat-menu #config="matMenu" >
-                <button mat-menu-item [matMenuTriggerFor]="estados" style="font-family: 'Ubuntu',sans-serif !important">Estado</button>
-                <button mat-menu-item [matMenuTriggerFor]="addChats" style="font-family: 'Ubuntu',sans-serif !important">Crear</button>
+            <mat-menu #config="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="estados"
+                    style="font-family: 'Ubuntu',sans-serif !important">Estado</button>
+                <button mat-menu-item [matMenuTriggerFor]="addChats"
+                    style="font-family: 'Ubuntu',sans-serif !important">Crear</button>
             </mat-menu>
 
-            <mat-menu #estados="matMenu" >
-                <button mat-menu-item (click)="cambiarEstadoUser(true)" class="btn-menu"  >
+            <mat-menu #estados="matMenu">
+                <button mat-menu-item (click)="cambiarEstadoUser(true)" class="btn-menu">
                     <span>Activo</span>
                     <span><i class="fa-solid fa-circle" style="color: #00b40f !important;"></i></span>
                 </button>
@@ -52,8 +54,9 @@
                     <span><i class="fa-solid fa-lock"></i></span>
                 </button>
             </mat-menu>
-
+            <div class="separador"></div>
         </div>
+
         <div class="groups">
             <ul>
                 <!-- <li *ngFor="let chat of chats">
@@ -70,51 +73,97 @@
 
                 </li> -->
                 <li data-aos="fade-right" *ngFor="let cuesp of listaChatUsuarioEspDTO; let i = index" class="z"
-                matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
-                [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple">
+                    matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                    [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="colorRiple">
 
                     <!--chat personal-->
-                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===1" (click)="cargarChat(cuesp.chat.idChat)">
-                        <div class="cont-img"><img class="header-image" 
-                            [src]="user.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'" alt=""> alt="">
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===1" (click)="toggleListChat()" (click)="cargarMensajeChat(cuesp.chat.idChat)">
+                        <div class="cont-img"><img class="header-image"
+                                [src]="user.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'"
+                                alt="">
                         </div>
-                        <div class="util" >
-                            
+                        <div class="util">
+
                             <span>{{user.username}}</span>
-                            <span class="subtitulo"> </span>
+                            <span class="subtitulo"  > escribiendo </span>
                         </div>
                     </a>
 
                     <!--chat de dos-->
-                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===2" (click)="cargarChat(cuesp.chat.idChat)">
-                        <div class="cont-img"><img class="header-image" 
-                            [src]="cuesp.listaUsuario[0]!.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'" alt="">
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===2" (click)="toggleListChat()" (click)="cargarMensajeChat(cuesp.chat.idChat)">
+                        <div class="cont-img"><img class="header-image"
+                                [src]="cuesp.listaUsuario[0]!.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'"
+                                alt="">
                         </div>
-                        <div class="util" >
-                            
+                        <div class="util">
+
                             <span>{{cuesp.listaUsuario[0]!.username}}</span>
-                            <span class="subtitulo"> </span>
+                            <span class="subtitulo" *ngIf="cuesp.chat.notificacion!=='N'">{{cuesp.chat.notificacion}}</span>
+                        </div>
+                        <span class="example-spacer"></span>
+                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacion==='N'">
+                            <i class="fa-solid fa-circle fa-bounce" style="--fa-animation-iteration-count: 3;"></i>
                         </div>
                     </a>
 
                     <!--chat grupal-->
-                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===3" (click)="cargarChat(cuesp.chat.idChat)">
+                    <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===3" (click)="toggleListChat()" (click)="cargarMensajeChat(cuesp.chat.idChat)">
                         <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/gcc.png" alt="">
                         </div>
-                        <div class="util" >
-                            
+                        <div class="util">
                             <span> {{cuesp.chat.nombre}}</span>
-                            <span class="subtitulo"> </span>
+                            <span class="subtitulo" *ngIf="cuesp.chat.notificacion!=='N'">{{cuesp.chat.notificacion}}</span>
+                        </div>
+                        <span class="example-spacer"></span>
+                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacion==='N'">
+                            <i class="fa-solid fa-circle fa-bounce" style="--fa-animation-iteration-count: 3;"></i>
                         </div>
                     </a>
 
                 </li>
 
             </ul>
+
+            <div class="separador"></div>
         </div>
+
     </div>
 
-    <div class="cont-chat">
+
+    <div *ngIf="!chatUsuarioEspDTO.chat.idChat" class="lazy">
+
+        <div class="cont-lazy">
+            <div class="head-lazy">
+                <!-- <div class="cont-img-lazy">
+                    <img class="img-lazy" src="../../../assets/imgs/page/chtra.png" alt="">
+                </div> -->
+            </div>
+            <div class="info-lazy">
+                <div class="cont-tittle"  data-aos="fade-left"  data-aos-duration="1200">
+                    <h1 class="tittle">Bienvenido a tu seccion de chat..! <span class="util"></span></h1>
+                </div>
+                <div class="cont-sub-tittle" data-aos="fade-right" data-aos-duration="1200">
+                    <h4 class="sub-tittle">Da click en uno de tus chats para que empiezes a mandar mensajes.</h4>
+                </div>
+                <!-- <div class="cont-btn">estadoBarCHat
+                    <button mat-raised-button  class="btn font" color="accent" (click)="toggleListChat()">Ir al login  <mat-icon>login</mat-icon></button>
+                </div> -->
+                <div class="cont-btn">
+                    <button class="btn" id="btn-right" matRipple [matRippleAnimation]="RippleAnimationConfing"
+                        [matRippleCentered]="false" [matRippleDisabled]="false" [matRippleUnbounded]="false"
+                        [matRippleColor]="'rgba(51, 0, 255,.1)'" (click)="toggleListChat()">
+                        <!-- <i class="fa-solid fa-arrow-right"></i> --> ver chats
+                    </button>
+                </div>
+  
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="chatUsuarioEspDTO.chat.idChat" class="cont-chat">
+
+        <!-- CABEZERA DE MENSAJES -->
 
         <div class="cont-titulo bar-top">
             <button class="btn" matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
@@ -123,24 +172,28 @@
                 <i class="fa-solid fa-list"></i>
             </button>
 
-            <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg" alt="">
+            <div class="cont-img"><img class="header-image" 
+                [src]="chatUsuarioEspDTO.chat.tipoChat.idTipoChat===2? chatUsuarioEspDTO.listaUsuario[0].genero==='M'?'../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png' :'../../../assets/imgs/page/gcc.png'" alt="">
             </div>
-            <p class="titulo"> Los suaves del free
-                <span class="subtitulo"> sub </span>
+            <p class="titulo"> {{chatUsuarioEspDTO.chat.tipoChat.idTipoChat===2? chatUsuarioEspDTO.listaUsuario[0].username :chatUsuarioEspDTO.chat.nombre }}
+                <span class="subtitulo"> {{write}} </span>
             </p>
 
             <span class="example-spacer"></span>
             <mat-icon>more_vert</mat-icon>
         </div>
+
+        <!-- SECCION DE MENSAJES -->
         <div class="groups" id="divChat" #scrollMe>
 
 
             <ul *ngFor="let m of mensajes;">
                 <!-- mensajes de otros -->
-                <li *ngIf="m.texto !== user.username && m.tipo !=='NUEVO_USUARIO'">
+                <li *ngIf="m.usuario!.username !== user.username && m.tipo !=='NUEVO_USUARIO'">
                     <div>
                         <div>
-                            <p>{{m.texto}}</p>
+                            <!-- <p [ngStyle]="{color:m.usuario!.color}"> {{m.usuario!.username}}</p> -->
+                            <p [style.color]="m.usuario!.color"> @{{m.usuario!.username}}</p>
                             <div>
                                 <span>{{m.texto}}</span>
                                 <p>
@@ -173,10 +226,10 @@
                     </li> -->
 
                 <!-- tus mensajes (con la directiva *ngIf se controla esto) -->
-                <li class="tu_li" *ngIf="m.texto === user.username && m.tipo !=='NUEVO_USUARIO'">
+                <li class="tu_li" *ngIf="m.usuario!.username === user.username && m.tipo !=='NUEVO_USUARIO'">
                     <div>
                         <div>
-                            <p>{{m.texto}}</p>
+                            <!-- <p > {{m.usuario!.username}}</p> -->
                             <div>
                                 <span>{{m.texto}}</span>
                                 <p>
@@ -233,8 +286,8 @@
                     <textarea matInput [(ngModel)]="mensaje.texto" ></textarea>
                 </mat-form-field> -->
                 <div class="form-field">
-                    <textarea placeholder="Escribe un mensaje..." (ngModelChange)="escribiendo()"
-                        [(ngModel)]="mensaje.texto"></textarea>
+                    <textarea placeholder="Escribe un mensaje..." (ngModelChange)="escribiendo($event)"
+                        [(ngModel)]="this.mensaje.texto"></textarea>
                 </div>
 
             </div>

@@ -4,7 +4,8 @@ import { TipoChat } from "./tipoChat";
 export class Chat {
     idChat: any;
     nombre:  string | undefined;
-    tipoChat : TipoChat | undefined;
+    tipoChat : TipoChat = new TipoChat();
     fechaCreacion: string | undefined;
     listaMensajes : Mensaje[] = []; 
+    notificacion?: string | undefined;
 }

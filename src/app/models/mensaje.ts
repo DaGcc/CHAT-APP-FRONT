@@ -5,7 +5,7 @@ export class Mensaje {
     idMensaje: any;
     chat : Chat | undefined;
     usuario: Usuario | undefined;
-    texto: string  | undefined;
+    texto: any;
     tipo : string  | undefined;
     fecha: Date | undefined;
 }

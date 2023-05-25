@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Usuario } from '../models/usuario';
 
@@ -9,9 +9,12 @@ import { Usuario } from '../models/usuario';
   providedIn: 'root'
 })
 export class AuthService {
+
+
+  chatCambio = new Subject<void>();
+
   url: string = `${environment.HOST}/usuarios` 
   constructor(private http : HttpClient) { }
-
 
   crearUsuaio(){
 
@@ -20,6 +23,9 @@ export class AuthService {
   //temporal o no?
   obtenerUsuarioPorEmail(email:String):Observable<Usuario>{
     return this.http.get<Usuario>(`${this.url}/buscado?email=${email}`)
+  }
+  encontrarUsuarioPorEmilPorDniPorUsername(valor : string):Observable<Usuario>{
+    return this.http.get<Usuario>(`${this.url}/buscar-usuario?valor=${valor}`)
   }
 
   isAuthenticated(){
@@ -34,5 +40,6 @@ export class AuthService {
   obtenerCredencialesUserstorage():Usuario{
     return JSON.parse(sessionStorage.getItem(`${environment.USUARIO}`)!) as Usuario;
   }
+
 
 }

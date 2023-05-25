@@ -2,27 +2,23 @@
 
     <mat-tab-group mat-align-tabs="center" class="cont-tab-group">
         <!-- primero: para buscar amigos y agregar a grupo, mas no personal -->
-        <mat-tab label="First" id="firstTab" [disabled]="disabledFirstTab">
-
+        <mat-tab id="firstTab" [disabled]="disabledFirstTab" [label]="data.titulo">
             <div class="cont-max">
-                <div class="cont-form" *ngIf="data.tipo==='g'">
+                <div class="cont-form" *ngIf="data.idTipoChat===3">
                     <form [formGroup]="form">
                         <div class="cont-field">
                             <mat-form-field appearance="legacy">
-                                <mat-label>Buscar amigos </mat-label>
-                                <input type="text" matInput formControlName="amigo" [formControl]="miControlAmigo"
-                                    [matAutocomplete]="auto">
-                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                    <mat-option *ngFor="let a of filteredOptionsAmigos | async" [value]="a">
-                                        {{a.username}}
-                                    </mat-option>
-                                </mat-autocomplete>
+                                <mat-label>Ingrese el DNI, EMAIL o USERNAME del usuario</mat-label>
+                                <input matInput placeholder="" type="text" class="example-right-align" formControlName="valor">
+                                <button *ngIf="this.form.value.valor" matSuffix mat-icon-button aria-label="Clear" (click)="form.setValue({'valor':null})">
+                                    <mat-icon>close</mat-icon>
+                                  </button>
                             </mat-form-field>
                         </div>
                     </form>
                 </div>
 
-                <div class="cont-form" *ngIf="data.tipo==='p'">
+                <div class="cont-form" *ngIf="data.idTipoChat===2">
                     <form [formGroup]="formTwo">
                         <div class="cont-field">
                             <mat-form-field appearance="legacy">
@@ -38,10 +34,10 @@
                 </div>
                 
                 <div class="cont-btn">
-                    <button mat-flat-button color="primary" *ngIf="data.tipo==='g'" [disabled]="form.invalid || disabledFirstTab">
+                    <button mat-flat-button color="primary" *ngIf="data.idTipoChat===3" (click)="buscarAmigo()" [disabled]="form.invalid || disabledFirstTab">
                         <i class="fa-regular fa-circle-check"></i>
                     </button>
-                    <button mat-flat-button color="primary" *ngIf="data.tipo==='p'" (click)="buscarAndAgregarAmigo()" [disabled]="formTwo.invalid || this.formTwo.value.dni==null">
+                    <button mat-flat-button color="primary" *ngIf="data.idTipoChat===2" (click)="buscarAmigo()" [disabled]="formTwo.invalid || this.formTwo.value.dni==null">
                         <i class="fa-regular fa-circle-check"></i>
                     </button>
                 </div>
@@ -63,18 +59,29 @@
                     </button>
                 </mat-toolbar>
 
+
+            </div>
+            <div class="secondTab" style="margin-top: 10px;" *ngIf="data.idTipoChat===2">
+                <div class="cont-btn">
+                    <button mat-flat-button color="primary" (click)="crearChat()">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                    <button mat-flat-button color="primary">
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </div>
             </div>
 
         </mat-tab>
 
         <!-- segundo: para confirmar y poner un nombre -->
-        <mat-tab label="Second" id="secondTab" [disabled]="listaAgregar.length==0 || disabledSecondTab">
+        <mat-tab label="Ultimo paso" id="secondTab" *ngIf="data.idTipoChat!==2" [disabled]="listaAgregar.length==0 || disabledSecondTab">
             <div class="secondTab">
                 <div class="cont-form">
                     <form [formGroup]="formThree" #FormThree="ngForm">
                         <div class="cont-field">
                             <mat-form-field appearance="legacy">
-                                <mat-label>Escriba el nombre del {{data.tipo==='p'? 'chat personal':'chat grupal'}}</mat-label>
+                                <mat-label>Escriba el nombre del chat grupal</mat-label>
                                 <input matInput placeholder="EX. 41111111" formControlName="nombreChat">
                             </mat-form-field>
                         </div>
