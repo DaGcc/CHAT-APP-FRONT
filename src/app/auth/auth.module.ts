@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthRecordComponent } from './auth-record/auth-record.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -17,8 +18,8 @@ import { MaterialModule } from '../material/material.module';
     FormsModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
-    // ReactiveFormsModule
+    FormsModule,
+    RouterModule
   ]
 })
 export class AuthModule { }

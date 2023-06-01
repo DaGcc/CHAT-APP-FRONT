@@ -2,21 +2,24 @@
     box-sizing: border-box;
 }
 
+
 button:focus {
     outline: 0 none;
 }
-.separador{
+
+.separador {
     position: absolute;
     right: 0;
     bottom: 0;
     top: 0;
     height: 90%;
     width: 3px;
-    background:rgba(150, 96, 250, 0.239);
+    background: rgba(150, 96, 250, 0.239);
     // border: 1px solid red;
     // border-style:groove;
     margin: auto;
 }
+
 .cont-img {
     /* background-color: aqua; */
     width: 50px;
@@ -36,14 +39,69 @@ button:focus {
     object-fit: cover;
 }
 
+.cont-aux {
+   
+    // background: radial-gradient(circle, #000000 0%, #000000 30%, #0a0a2a 70%, #0a0a2a 100%);
+    background-color: #661eed;
+    // background-image;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+
+
+.adorno {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30%;
+    // background-color: #661eed;
+}
+
+// .ciculo {
+//     position: absolute;
+//     background-color: #661eed;
+//     border-radius: 50px;
+//     z-index:1;
+//     width: 50px;
+//     height: 50px;
+//     animation: animacionMovimiento 5s infinite;
+//     transition: all 1s;
+// }
+
+// @keyframes animacionMovimiento {
+//     0% {
+//         top: 0;
+//         left: 0;
+//     }
+
+//     100% {
+//         top: 0;
+//         left: 0;
+//     }
+// }
+
 .cont-app-chat {
     font-family: 'Ubuntu', sans-serif;
+    overflow: hidden;
+    border-radius: 30px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fff;//cambiar
-    height: 100%;
+    // background-color: rgba(255, 255, 255, 0.628); //cambiar
+    // backdrop-filter: blur(50px);
+    box-shadow: 0 0 15px -1px rgba(82, 79, 79, 0.337);
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    margin: auto;
 }
 
 .cont-groups {
@@ -53,10 +111,12 @@ button:focus {
     transition: all 600ms ease-out;
     transition-delay: 200ms;
 }
-.cont-groups .bar-top:first-child{
+
+.cont-groups .bar-top:first-child {
     box-shadow: -6px 0 10px -1px rgba(0, 0, 0, 0.12);
 }
-.cont-chat .bar-top:first-child{
+
+.cont-chat .bar-top:first-child {
     box-shadow: 6px 0 10px -1px rgba(0, 0, 0, 0.12);
 }
 
@@ -109,7 +169,7 @@ button:focus {
     height: fit-content;
 }
 
-#btn-right{
+#btn-right {
     display: none;
 }
 
@@ -131,11 +191,11 @@ button:focus {
     position: relative;
     height: 90%;
     // background-color: var(--color-gris-oscuro);
-    background-color: #ffff;
+    background-color: transparent;
     // overflow-y: auto;
     overflow-y: overlay;
     padding: 10px 10px 10px 1px;
-    
+
 }
 
 ul {
@@ -163,7 +223,7 @@ a {
     align-items: center;
     text-decoration: none;
     user-select: none;
-    background-color:rgba(150, 96, 250, 0.239);
+    background-color: rgba(150, 96, 250, 0.239);
     color: #000000;
     font-weight: 700;
     font-size: 120%;
@@ -180,10 +240,12 @@ li span {
     display: flex;
     flex-direction: column;
 }
+
 //pendiente pa la lista de usuarios 
-.mbs{
-    background: linear-gradient(90deg, rgba(0,0,0,0) 15%, rgba(255,255,255,0) 25%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0) 65%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 85%, rgba(0,0,0,0) 86%, rgba(255,255,255,1) 100%);
+.mbs {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 15%, rgba(255, 255, 255, 0) 25%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 86%, rgba(255, 255, 255, 1) 100%);
 }
+
 /*****************************************/
 /* clases para el contenido de los chats */
 /*****************************************/
@@ -191,15 +253,17 @@ li span {
     width: 100%;
     height: 100%;
     position: relative;
-    border-left: 0px solid rgb(102, 30, 237);//en observacion
+    border-left: 0px solid rgb(102, 30, 237); //en observacion
 }
 
 .cont-chat .cont-titulo {
     padding: 0 20px 0 20px;
     display: flex;
     justify-content: flex-start;
+    box-shadow: 0px 0 10px -1px rgba(0, 0, 0, 0.12);
 }
-.cont-chat .cont-titulo .btn{
+
+.cont-chat .cont-titulo .btn {
     width: 45px;
     height: 45px;
     border-radius: 100%;
@@ -229,30 +293,35 @@ li span {
     position: relative;
     border-radius: 0px;
     border: 0px;
-    box-shadow: 0px 0px 0px 0px transparent;;
+    box-shadow: 0px 0px 0px 0px transparent;
+    ;
     width: 100%;
     margin: 5px 0px;
     padding-left: 10px;
 }
-.notificacion{
+
+.notificacion {
     // background-color: red;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.notificacion div{
+
+.notificacion div {
     margin: 5px;
     padding: 6px 10px;
-    background-color:#198754;
+    background-color: #198754;
     // border:none;    
     text-align: center;
     border-radius: 12px;
     width: fit-content !important;
     // box-shadow: 0 0 15px 15px #198754;
 }
-.notificacion-mensaje{
+
+.notificacion-mensaje {
     color: #661eed;
 }
+
 .cont-chat .groups ul li div {
     position: relative;
     width: 85%;
@@ -262,9 +331,11 @@ li span {
 
 .cont-chat .groups ul li div div {
     display: inline-block;
-    background-color: rgba(150, 96, 250, 0.239);
-    color: #000;
-    border-radius: 0px 20px 20px 20px;
+    // background-color: rgba(150, 96, 250, 0.239);
+    background-color: #7d71f4;
+    border: 5px solid #ffffff;
+    color: #ffffff;
+    border-radius: 0px 30px 30px 35px;
     width: fit-content;
     padding-right: 10px;
 }
@@ -309,7 +380,7 @@ li span {
     border-radius: 0px;
     border: 0px;
     width: 100%;
-    
+
 }
 
 .cont-chat .groups ul .tu_li div {
@@ -323,10 +394,12 @@ li span {
 
 .cont-chat .groups ul .tu_li div div {
     display: inline-block;
-    color: #fff;
+    color: #000000;
     // background-color: rgb(51, 0, 255);
-    background-color: #661eed;
-    border-radius: 20px 0 20px 20px;
+    background-color: #ffffff;
+    border: 5px solid #661eed;
+    // border-radius: 20px 0 20px 20px;
+    border-radius: 30px 0 35px 30px;
     width: fit-content;
     padding: 10px 10px 0px 0px;
 }
@@ -383,7 +456,7 @@ li span {
     margin: auto;
     max-height: 400px;
     border-radius: 25px;
-    box-shadow:0px 1px 13px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 1px 13px -1px rgba(0, 0, 0, 0.2);
 }
 
 .cont-input-esp {
@@ -470,6 +543,7 @@ li span {
     background-clip: padding-box;
     border-radius: 1.5rem;
 }
+
 /*******************************************/
 
 .btn {
@@ -491,7 +565,7 @@ li span {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Ubuntu',sans-serif !important;
+    font-family: 'Ubuntu', sans-serif !important;
 }
 
 .btn-menu span {
@@ -504,10 +578,11 @@ li span {
 }
 
 /*********clase a usar en el ts*****/
-.cont-groups-ts{
+.cont-groups-ts {
     position: relative;
-    left:0 !important;
+    left: 0 !important;
 }
+
 /***********************************/
 
 
@@ -516,29 +591,32 @@ li span {
 /*******DISEÑO DE INTRO************/
 /**********************************/
 
-.lazy{
+.lazy {
     width: 100%;
     height: 100%;
     position: relative;
     // background-color: rgba(150, 96, 250, 0.239);
     // background-image: url(../../../assets/imgs/page/chtra.png);
 }
-.cont-lazy{
+
+.cont-lazy {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.head-lazy{
+
+.head-lazy {
     width: 100%;
     height: 55%;
     background-image: url(../../../assets/imgs/page/chtra.png);
     background-repeat: no-repeat;
-    background-size:contain;
+    background-size: contain;
     /* background-attachment: fixed; */
     background-position: center;
 }
+
 // .cont-img-lazy{
 //     display: flex;
 //     align-items: center;
@@ -549,7 +627,7 @@ li span {
 //     width: 100%;
 //     height: 100%;
 // }
-.info-lazy{
+.info-lazy {
     width: 90%;
     height: 20%;
     display: flex;
@@ -560,18 +638,20 @@ li span {
 }
 
 
-.info-lazy .cont-tittle{
+.info-lazy .cont-tittle {
     user-select: none;
     margin: auto;
 }
-.info-lazy .tittle{
+
+.info-lazy .tittle {
     position: relative;
     font-family: 'Ubuntu', sans-serif;
     font-weight: 700;
-    font-size:30px;
+    font-size: 30px;
     border-bottom: 20px solid rgba(150, 96, 250, 0.239);
     width: fit-content;
 }
+
 .info-lazy .util {
     position: absolute;
     width: 100%;
@@ -581,13 +661,13 @@ li span {
     background: #000000;
 }
 
-.cont-sub-tittle{
+.cont-sub-tittle {
     user-select: none;
     margin-top: 15px;
     margin-bottom: 5px;
 }
 
-.sub-tittle{
+.sub-tittle {
     font-family: 'Ubuntu', sans-serif;
     text-align: center;
     font-weight: 300;
@@ -595,32 +675,41 @@ li span {
     /* line-height: 110%; */
 }
 
-.info-lazy .cont-btn{
+.info-lazy .cont-btn {
     font-family: 'Ubuntu', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40%;
 }
-.info-lazy .cont-btn .btn{
-    
+
+.info-lazy .cont-btn .btn {
+
     width: 100%;
     background-color: #FF9900;
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     border-radius: 20px;
 }
+
 /*********************************/
 /*********RESPONSIVE*************/
 /*********************************/
 
 @media screen and (max-width:830px) {
-    
-    .head-lazy{
+
+    .cont-app-chat{
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        overflow: auto;
+    }
+    .head-lazy {
         width: 100%;
         height: 35%;
     }
+
     .info-lazy .tittle {
         position: relative;
         font-family: 'Ubuntu', sans-serif;
@@ -629,21 +718,24 @@ li span {
         border-bottom: 20px solid rgba(150, 96, 250, 0.239);
         width: fit-content;
     }
-    .sub-tittle{
+
+    .sub-tittle {
         font-family: 'Ubuntu', sans-serif;
         text-align: center;
         font-weight: 300;
         font-size: 16px;
         /* line-height: 110%; */
     }
-    .info-lazy  .cont-btn {
+
+    .info-lazy .cont-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 50%;
     }
-    .info-lazy .cont-btn .btn{
-        color:#fff;
+
+    .info-lazy .cont-btn .btn {
+        color: #fff;
         width: 100%;
         background-color: rgba(150, 96, 250, 0.239);
         box-shadow: 0 0 15px -1px rgba(164, 164, 164, 0.269);
@@ -651,24 +743,26 @@ li span {
 
 }
 
-@media screen and (max-width:700px){
-    .separador{
+@media screen and (max-width:700px) {
+    .separador {
         display: none;
     }
-    .cont-groups{
+
+    .cont-groups {
         position: absolute;
         z-index: 100;
         left: -100%;
         width: 100%;
         transition: all .5s ease-in-out;
     }
-    .cont-chat .cont-titulo .btn{
-        display:flex;
+
+    .cont-chat .cont-titulo .btn {
+        display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    #btn-right{
+    #btn-right {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -678,9 +772,11 @@ li span {
         border-left: none
     }
 }
-.z{
+
+.z {
     box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.15);
 }
+
 /* --tw-scale-x: -1 !important;
 transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))!important;
  */

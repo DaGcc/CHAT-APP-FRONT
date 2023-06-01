@@ -2,7 +2,7 @@ export class Usuario {
 
     idUsuario: any;
     username : string | undefined;
-    estado: boolean | undefined;
+    estado: boolean =true;
     dni: string | undefined;
     genero: string | undefined;
     email: string | undefined;

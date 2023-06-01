@@ -4,6 +4,7 @@ import { PagesComponent } from './pages.component';
 import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
 import { guardFn } from '../guards/guard-fn';
+import { ChatGeneralComponent } from './chat-general/chat-general.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,11 @@ const routes: Routes = [
       {
         path: 'chat',
         component:ChatComponent
+      },
+      
+      {
+        path: 'chat-general',
+        component:ChatGeneralComponent
       }
     ],canActivate:[guardFn]
   },

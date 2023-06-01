@@ -10,12 +10,12 @@
                 <div class="perfil-super">
                   <div class="perfil-img">
                     <div class="cont-img">
-                      <img src="../../../assets/imgs/page/sad.png" alt="">
+                      <img [src]="user.rutaFoto? src : user.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'" alt="">
                     </div>
                   </div>
                   <div class="btn-p" >
                     <button mat-button  onclick="document.getElementById('iptPerfil').click()"><i class="fa-solid fa-image"></i></button>
-                    <input id="iptPerfil" type="file" style="display: none;" (change)="seleccionarArchivo($event)" >
+                    <input id="iptPerfil" type="file" style="display: none;" (change)="seleccionarArchivo($event)"  accept="image/*">
                   </div>
                 </div>
 
@@ -44,11 +44,20 @@
                 (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
                 <span routerLink="chat" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
                 <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
-                  <i class="fa-solid fa-message"></i> <span class="title">Chat</span>
+                  <i class="fa-solid fa-comment"></i> <span class="title">Chats personales</span>
                   <!-- <i class="fa-solid fa-message fa-spin fa-spin-reverse p">Chat</i><span class="title">Chat</span> -->
                 </a>
               </li>
-         
+      
+              <li matRipple [matRippleAnimation]="RippleAnimationConfing" [matRippleCentered]="false"
+                [matRippleDisabled]="false" [matRippleUnbounded]="false"  [matRippleColor]="colorRiple" 
+                (click)="getScreenWidth<=pixelResponsive?drawer.toggle():''" >
+                <span routerLink="chat-general" routerLinkActive="on" [routerLinkActiveOptions]="{exact: true}" class="off"></span>
+                <a routerLink="chat-general" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="font">
+                  <i class="fa-solid fa-comments"></i> <span class="title">Chat General</span>
+                  <!-- <i class="fa-solid fa-message fa-spin fa-spin-reverse p">Chat</i><span class="title">Chat</span> -->
+                </a>
+              </li>
 
             </ul>
           </div>

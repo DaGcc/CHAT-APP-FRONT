@@ -26,7 +26,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 
 // }
 
-export const guardFn : CanActivateFn = function activeFM(){
+export const guardFn : CanActivateFn = function activeFM():boolean{
 
     //@Inject(Router) solo se usa dentro del constructor
     //inject() es una funcion para inyectar sin la necesidad de un constructor

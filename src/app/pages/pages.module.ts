@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { ChatEdicionDialogComponent } from './chat/chat-edicion-dialog/chat-edicion-dialog.component';
+import { ChatGeneralComponent } from './chat-general/chat-general.component';
 
 
 
@@ -16,7 +17,8 @@ import { ChatEdicionDialogComponent } from './chat/chat-edicion-dialog/chat-edic
     PagesComponent,
     ChatComponent,
     HomeComponent,
-    ChatEdicionDialogComponent
+    ChatEdicionDialogComponent,
+    ChatGeneralComponent
   ],
   imports: [
     CommonModule,

@@ -3,7 +3,7 @@
     <div class="cont-groups" id="listChat">
         <div class="cont-titulo bar-top">
             <div class="cont-log">
-                <div class="cont-img"><img class="header-image" src="../../../assets/imgs/page/backiee-78859.jpg"
+                <div class="cont-img"><img class="header-image" [src]="user.rutaFoto? src : user.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'"
                         alt=""></div>
                 <span *ngIf="user.estado==false" style="background-color: #ab0000;"></span>
                 <span *ngIf="user.estado==true" style="background-color: #00b40f;"></span>
@@ -85,23 +85,23 @@
                         <div class="util">
 
                             <span>{{user.username}}</span>
-                            <span class="subtitulo"  > escribiendo </span>
+                            <span class="subtitulo"  > </span>
                         </div>
                     </a>
 
                     <!--chat de dos-->
                     <a *ngIf="cuesp.chat.tipoChat!.idTipoChat===2" (click)="toggleListChat()" (click)="cargarMensajeChat(cuesp.chat.idChat)">
                         <div class="cont-img"><img class="header-image"
-                                [src]="cuesp.listaUsuario[0]!.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'"
+                                [src]="cuesp.listaUsuario[0].rutaFoto? obtener(cuesp.listaUsuario[0].rutaFoto) : cuesp.listaUsuario[0]!.genero=='M'? '../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png'"
                                 alt="">
                         </div>
                         <div class="util">
 
                             <span>{{cuesp.listaUsuario[0]!.username}}</span>
-                            <span class="subtitulo" *ngIf="cuesp.chat.notificacion!=='N'">{{cuesp.chat.notificacion}}</span>
+                            <span class="subtitulo" *ngIf="cuesp.chat.notificacionEscritura!=='NUEVO_MENSAJE'">{{cuesp.chat.notificacionEscritura}}</span>
                         </div>
                         <span class="example-spacer"></span>
-                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacion==='N'">
+                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacionEscritura==='NUEVO_MENSAJE'">
                             <i class="fa-solid fa-circle fa-bounce" style="--fa-animation-iteration-count: 3;"></i>
                         </div>
                     </a>
@@ -112,10 +112,10 @@
                         </div>
                         <div class="util">
                             <span> {{cuesp.chat.nombre}}</span>
-                            <span class="subtitulo" *ngIf="cuesp.chat.notificacion!=='N'">{{cuesp.chat.notificacion}}</span>
+                            <span class="subtitulo" *ngIf="cuesp.chat.notificacionEscritura!=='NUEVO_MENSAJE'">{{cuesp.chat.notificacionEscritura}}</span>
                         </div>
                         <span class="example-spacer"></span>
-                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacion==='N'">
+                        <div class="notificacion-mensaje"  *ngIf="cuesp.chat.notificacionEscritura==='NUEVO_MENSAJE' && cuesp.chat.notificacionLectura==false " >
                             <i class="fa-solid fa-circle fa-bounce" style="--fa-animation-iteration-count: 3;"></i>
                         </div>
                     </a>
@@ -176,7 +176,9 @@
                 [src]="chatUsuarioEspDTO.chat.tipoChat.idTipoChat===2? chatUsuarioEspDTO.listaUsuario[0].genero==='M'?'../../../assets/imgs/page/pm.png' : '../../../assets/imgs/page/pf.png' :'../../../assets/imgs/page/gcc.png'" alt="">
             </div>
             <p class="titulo"> {{chatUsuarioEspDTO.chat.tipoChat.idTipoChat===2? chatUsuarioEspDTO.listaUsuario[0].username :chatUsuarioEspDTO.chat.nombre }}
-                <span class="subtitulo"> {{write}} </span>
+                <span *ngIf="chatUsuarioEspDTO.chat.tipoChat.idTipoChat===3">
+                    <span class="subtitulo" *ngFor="let u of chatUsuarioEspDTO.listaUsuario; let i = index"> {{u.username}} <span *ngIf="chatUsuarioEspDTO.listaUsuario.length-1!=i">,</span>  </span>
+                </span>
             </p>
 
             <span class="example-spacer"></span>

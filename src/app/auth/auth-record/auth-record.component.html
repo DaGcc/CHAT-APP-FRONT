@@ -1,15 +1,69 @@
-<div class="cont-ads">
+<body>
+  
+
+    <div class="contenido">
+
+        <div class="info">
+            <div>
+                <h2>Regístrate</h2>
+                <div class="texto">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum, vero recusandae exercitationem sed
+                    , porro ullam totam numquam repellendus, assumenda mollitia aperiam unde eos tenetur iusto consequatur 
+                    inventore odio qui explicabo.
+                </div>
+            </div>
+
+
+        </div>
+        <form [formGroup]="formUser" (ngSubmit)="operar()" class="form">
+            <h2>Rellene el Formulario</h2>
+            <div class="inputs">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>DNI</mat-label>
+                    <input type="number" matInput formControlName="dni">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="username">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Género</mat-label>
+                    <mat-select formControlName="genero">
+                        <mat-option value='M'>Masculino</mat-option>
+                        <mat-option value='F'>Femenino</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="file">
+                    <h3>Foto de Perfil:</h3>
+                    <input class="hola" type="file" accept="image/*" (change)="seleccionarImg($event)">
+                </div>
     
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput [formControl]="email">
+                    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+    
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" onkeydown="return (event.keyCode !== 32);">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+    
+            </div>
+
+            <button mat-raised-button type="submit" color="primary" [disabled]="formUser.invalid">Registrarse</button>
+
+            <div class="irLogin">
+                <h3 routerLink='/login' >¿Tienes una cuenta?, <span>Inicia Sesión!</span></h3>
+            </div>
+        </form>
         
-    <section class="form-registro">
-        <h4>REGISTRO</h4>
-        <input class="controls" type="text" name="nombres" id="nombres" placeholder="Ingrese su nombre">
-        <input class="controls" type="text" name="apellidos" id="apellidos" placeholder="Ingrese su apellido">
-        <input class="controls" type="email" name="correo" id="correo" placeholder="Ingrese su correo">
-        <input class="controls" type="password" name="correo" id="correo" placeholder="Ingrese su contraseña">
-        <p>Estoy de acuerdo con <a href="#">Terminos y condiciones</a></p>
-        <input class="botons" type="submit" value="Registrar">
-        <p><a href="#">¿Ya tengo cuenta?</a></p>
-        
-    </section>
-</div>
+    </div>
+</body>

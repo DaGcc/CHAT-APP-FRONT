@@ -101,6 +101,9 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
   ngOnInit(): void {
 
+    this.authService.usuarioCambio.subscribe({
+      next : (data:Usuario) => this.user = data
+    })
     this.user = this.authService.obtenerCredencialesUserstorage();
     this.cargarChatUser(this.user.idUsuario);
 
@@ -149,17 +152,16 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
         mensaje.fecha = new Date(mensaje.fecha!);
         console.log(this.chatUsuarioEspDTO?.chat.idChat);
         this.mensajes.push(mensaje);
-        this.mensaje.texto = undefined;
         this.scrollButton();
       });
 
       this.notificacionFn();
 
-      this.cliente.subscribe(`/chat/escribiendo/12`, e => {
-        console.log('ejecuto escritura')
-        console.log(e.body)
-        this.write = e.body
-      })
+      // this.cliente.subscribe(`/chat/escribiendo/12`, e => {
+      //   console.log('ejecuto escritura')
+      //   console.log(e.body)
+      //   this.write = e.body
+      // })
     };
 
     //METODO/ENVENTO QUE EJECUTARA LAS SUBSCRIPCIONES CUANDO NOS DESCONECTEMOS
@@ -175,23 +177,29 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
     // console.log(this.listaChatUsuarioEspDTO)
 
     //esto solo iterara al inicio
+
     this.listaChatUsuarioEspDTO.forEach((c, i) => {
+      console.log(c.chat.idChat)
       //crea subscripciones multiples con diferentes idChat, por ende, cuando mande notiicaciones a un chat determinado este buscara dicha subcripcion
       this.suscripcionNotificacion = this.suscripcionChat = this.cliente.subscribe(`/chat/notificar/${c.chat.idChat}`, data => {
+        console.log(data.body)
 
-        console.log(i)
-        if (data.body === 'N') {
-          console.log(data.body)
-          this.listaChatUsuarioEspDTO[i].chat.notificacion = 'N'
-          console.log(this.listaChatUsuarioEspDTO[i].chat.notificacion)
-        } else if(data.body===""){  
-          this.listaChatUsuarioEspDTO[i].chat.notificacion = undefined        
-          // console.log(data.body + "en" + c.chat.idChat)
-        } else {
-          this.listaChatUsuarioEspDTO[i].chat.notificacion = data.body          
+        // console.log(i)
+        if (data.body.includes("está escribiendo....")) {//
+
+          this.listaChatUsuarioEspDTO[i].chat.notificacionEscritura = data.body
           // console.log(data.body + "en" + c.chat.idChat)
         }
-
+        else if (data.body === 'NUEVO_MENSAJE') {//nuevo mensaje
+          console.log(data.body)
+          this.listaChatUsuarioEspDTO[i].chat.notificacionEscritura = 'NUEVO_MENSAJE'
+          this.listaChatUsuarioEspDTO[i].chat.notificacionLectura = (this.chatUsuarioEspDTO!.chat.idChat===c.chat.idChat)         
+          
+        } else {//notificacion
+          this.listaChatUsuarioEspDTO[i].chat.notificacionEscritura = undefined;
+          
+          // console.log(data.body + "en" + c.chat.idChat)
+        }
         // this.notificacion!.detalle = data.body;
 
       })
@@ -216,40 +224,51 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
       body: JSON.stringify(this.mensaje)
     });
 
-    let ue = new NotificacionUser();
-    ue.chat = this.chatUsuarioEspDTO!.chat;
-    ue.usuario = this.user;
-    ue.tipo = "N";
+    
+    this.ue.chat = this.chatUsuarioEspDTO!.chat;
+    this.ue.usuario = this.user;
+    this.ue.tipo = "NUEVO_MENSAJE";
 
     this.cliente.publish({
       destination: '/app/notificar',
-      body: JSON.stringify(ue)
+      body: JSON.stringify(this.ue)
     })
+
+    this.mensaje.texto=undefined
   }
 
   write: string | undefined
 
+  ue : NotificacionUser = new NotificacionUser();
+
   escribiendo(texto: any) {
     // this.suscripcionNotificacion.unsubscribe();
-    let ue = new NotificacionUser();
-    ue.chat = this.chatUsuarioEspDTO!.chat;
-    ue.usuario = this.user;
-    ue.tipo = "E";
+    console.log( texto )
+    
+    this.ue.chat = this.chatUsuarioEspDTO!.chat;
+    this.ue.usuario = this.user;
+    this.ue.tipo = "ESCRIBIENDO";
     // console.log(ue)
 
     if (texto.trim() === '') {
-      ue.tipo = "NADA";
-    } 
+      this.ue.tipo = "NADA";
+    }
 
     this.cliente.publish({
       destination: '/app/notificar',
-      body: JSON.stringify(ue)
+      body: JSON.stringify(this.ue)
     })
+
 
 
     // this.notificacionFn();
   }
 
+  obtener(ruta:string){
+    console.log(ruta)
+    return `http://localhost:8080/usuarios/ver/${ruta}`;
+    // return src;
+   }
 
 
 
@@ -320,7 +339,12 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
   page: number = 0
   cargarMensajeChat(idChat: number) {
+    this.mensaje.texto = undefined;
     this.suscripcionChat.unsubscribe();
+    this.escribiendo("");
+
+    let i = this.listaChatUsuarioEspDTO.findIndex(c => c.chat.idChat === idChat);
+    this.listaChatUsuarioEspDTO[i].chat.notificacionLectura = true
 
     this.chatUsuarioEspDTO = this.listaChatUsuarioEspDTO.find(cu => {
       return cu.chat.idChat === idChat
@@ -338,7 +362,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
           mensaje.fecha = new Date(mensaje.fecha!);
           console.log(this.chatUsuarioEspDTO?.chat.idChat);
           this.mensajes.push(mensaje);
-          this.mensaje.texto = undefined;
+          // this.mensaje.texto = undefined;
           this.scrollButton();
         });
         this.scrollButton();
@@ -350,6 +374,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
 
   addchat(idTipoChat: number) {
+    this.suscripcionNotificacion?.unsubscribe();
     // let a : Amigos = this.amigos?.id!=null? this.amigos : new Amigos();
     // let data : {tipo:string,titulo:string,user: Usuario,amigos:any} por el momento se pensaja lo de amigos como recursividad
     let data: { idTipoChat: number, titulo: string, user: Usuario, amigos: Usuario[] }
@@ -394,6 +419,7 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
             duration: 2000
           })
         }
+        this.notificacionFn();
       })
     } else {
       if (this.chatPrivado) {
@@ -409,6 +435,9 @@ encapsulamiento para trabajar con el DOM de manera segura y efectiva.
 
   }
 
+  get src() {
+    return `http://localhost:8080/usuarios/ver/${this.user.rutaFoto}`;
+  }
 }
 
 

@@ -7,5 +7,6 @@ export class Chat {
     tipoChat : TipoChat = new TipoChat();
     fechaCreacion: string | undefined;
     listaMensajes : Mensaje[] = []; 
-    notificacion?: string | undefined;
+    notificacionEscritura?: string | undefined;
+    notificacionLectura?: boolean | undefined
 }
